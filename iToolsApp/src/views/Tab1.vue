@@ -6,7 +6,6 @@
       </ion-buttons>
       <ion-title>Standard</ion-title>
     </ion-toolbar>
-
     <ion-menu side="start" menu-id="first" content-id="main">
       <ion-header>
         <ion-toolbar translucent>
@@ -24,15 +23,48 @@
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main"></ion-router-outlet>
-    <!-- <ion-content :fullscreen="true"> -->
-    <!-- <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Tab 1</ion-title>
-        </ion-toolbar>
-      </ion-header> -->
+    <ion-content>
+      <div class="hot_content">
+        <ion-card class="card">
+          <img src="/assets/icon/icon.png" />
+          <ion-card-header>
+            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-card-title>Card Title</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Keep close to Nature's heart... and break clear away, once in
+            awhile, and climb a mountain or spend a week in the woods. Wash your
+            spirit clean.
+          </ion-card-content>
+        </ion-card>
 
-    <!-- <ExploreContainer name="Tab 1 page" />
-    </ion-content> -->
+        <ion-card class="card">
+          <img src="/assets/icon/icon.png" />
+          <ion-card-header>
+            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-card-title>Card Title</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Keep close to Nature's heart... and break clear away, once in
+            awhile, and climb a mountain or spend a week in the woods. Wash your
+            spirit clean.
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="card">
+          <img src="/assets/icon/icon.png" />
+          <ion-card-header>
+            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-card-title>Card Title</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Keep close to Nature's heart... and break clear away, once in
+            awhile, and climb a mountain or spend a week in the woods. Wash your
+            spirit clean.
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-content>
   </ion-page>
 </template>
 
@@ -75,3 +107,42 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.hot_content {
+  height: 310px;
+  width: 100vh;
+  overflow: scroll;
+}
+.hot_content .card {
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+  display: inline-block;
+}
+.hot_content .card1 {
+  height: 220px;
+  position: absolute;
+  left: 0px;
+  top: 15px;
+}
+.hot_content .card2 {
+  position: absolute;
+  left: 50%;
+  z-index: 2;
+  margin-left: -125px;
+}
+.hot_content .card3 {
+  height: 220px;
+  position: absolute;
+  right: 0px;
+  top: 15px;
+}
+.hot_content .card img {
+  position: absolute;
+  left: 0px;
+  top: 100px;
+  z-index: -1;
+  width: 100% !important;
+}
+</style>
