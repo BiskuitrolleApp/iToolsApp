@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 // import { RouteRecordRaw } from "vue-router";
-import Tabs from "../views/Tabs.vue";
+import Tabs from "../views/Tab/Tabs.vue";
+import Border from "../views/Border/singleBorder.vue";
 
 const routes = [
   {
     path: "/",
-    redirect: "/tabs/tab1",
+    redirect: "/tabs/home",
   },
   {
     path: "/tabs/",
@@ -13,19 +14,33 @@ const routes = [
     children: [
       {
         path: "",
-        redirect: "/tabs/tab1",
+        redirect: "/tabs/home",
       },
       {
-        path: "tab1",
-        component: () => import("@/views/Tab1.vue"),
+        path: "home",
+        component: () => import("@/views/Tab/home.vue"),
       },
       {
-        path: "tab2",
-        component: () => import("@/views/Tab2.vue"),
+        path: "me",
+        component: () => import("@/views/Tab/me.vue"),
+      },
+    ],
+  },
+  {
+    path: "/border/",
+    component: Border,
+    children: [
+      {
+        path: "",
+        redirect: "/border/single",
       },
       {
-        path: "tab3",
-        component: () => import("@/views/Tab3.vue"),
+        path: "single",
+        component: () => import("@/views/Border/singleBorder.vue"),
+      },
+      {
+        path: "batch",
+        component: () => import("@/views/Border/batchBorder.vue"),
       },
     ],
   },
