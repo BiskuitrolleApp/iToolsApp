@@ -25,18 +25,29 @@
     <!-- <ion-content> -->
     <ion-content id="content">
       <ion-grid>
-        <ion-row class="pageList">
-          <ion-col size="12" v-for="(item, index) in views" :key="index">
+        <ion-row
+          class="pageList"
+          v-for="(ritem, rindex) in views"
+          :key="rindex"
+        >
+          <ion-list-header>
+            <ion-label>{{ ritem.title }}</ion-label>
+          </ion-list-header>
+          <ion-col
+            size="12"
+            v-for="(citem, cindex) in ritem.list"
+            :key="cindex"
+          >
             <ion-card
               class="card card1"
-              :disabled="item.disabled"
-              @click="jumbToView(item.page)"
+              :disabled="citem.disabled"
+              @click="jumbToView(citem.page)"
             >
-              <img v-if="item.bgi == ''" src="/assets/icon/icon.png" />
-              <img v-else :src="item.bgi" />
+              <img v-if="citem.bgi == ''" src="assets/icon/icon.png" />
+              <img v-else :src="citem.bgi" />
               <ion-card-header>
-                <ion-card-title>{{ item.title }}</ion-card-title>
-                <ion-card-subtitle>{{ item.subTitle }}</ion-card-subtitle>
+                <ion-card-title>{{ citem.title }}</ion-card-title>
+                <ion-card-subtitle>{{ citem.subTitle }}</ion-card-subtitle>
               </ion-card-header>
             </ion-card>
           </ion-col>
