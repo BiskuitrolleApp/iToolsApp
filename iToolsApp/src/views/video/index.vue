@@ -20,6 +20,11 @@
       <ion-button expand="block" @click="jumpToUrl" class="videoAddressBtn"
         >开始解析</ion-button
       >
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button @click="getLinkList">
+          <ion-icon :icon="paperPlaneOutline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-content>
   </ion-page>
 </template>
@@ -34,11 +39,22 @@ import {
   IonItem,
   IonHeader,
   IonBackButton,
+  IonFab,
+  IonFabButton,
+  IonIcon,
+  modalController,
 } from "@ionic/vue";
+import { paperPlaneOutline } from "ionicons/icons";
+import AddUrl from "./addUrl.vue";
 export default {
   created() {
     // 从路由里动态获取 url地址   具体地址看libs下util.js里的 backendMenuToRoute  方法
     this.reportUrl = this.$route.meta.pathUrl;
+  },
+  setup() {
+    return {
+      paperPlaneOutline,
+    };
   },
   components: {
     IonPage,
@@ -50,15 +66,29 @@ export default {
     IonInput,
     IonItem,
     IonBackButton,
+    IonFab,
+    IonFabButton,
+    IonIcon,
   },
   data() {
     return {
       address: "",
+      modal: null,
     };
   },
   methods: {
     jumpToUrl() {
       console.log("address :>> ", this.address);
+    },
+    async getLinkList() {
+      const modal = await modalController.create({
+        component: AddUrl,
+        cssClass: "my-custom-class",
+        componentProps: {
+          title: "New Title",
+        },
+      });
+      return modal.present();
     },
   },
 };

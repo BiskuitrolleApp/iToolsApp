@@ -2,6 +2,11 @@
   <ion-page>
     <ion-toolbar>
       <ion-title>添加新链接</ion-title>
+      <ion-buttons slot="end">
+        <ion-button @click="cancelNewUrl">
+          取消
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
     <ion-content id="content">
       <ion-item class="videoAddressInput">
@@ -22,8 +27,9 @@
   </ion-page>
 </template>
 <script>
-import { IonPage, IonContent } from "@ionic/vue";
+import { IonPage, IonContent, modalController } from "@ionic/vue";
 import baseCode from "../../api/baseCode";
+
 export default {
   components: { IonPage, IonContent },
   data() {
@@ -38,6 +44,12 @@ export default {
       var base = new baseCode();
       var result2 = base.decode(this.linkList);
       console.log(result2);
+
+      // modalController.dismiss();
+    },
+    cancelNewUrl() {
+      this.linkList = "";
+      modalController.dismiss();
     },
   },
 };

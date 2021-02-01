@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "@ionic/vue-router";
 // import { RouteRecordRaw } from "vue-router";
 import Tabs from "../views/Tab/Tabs.vue";
 import Border from "../views/Border/singleBorder.vue";
-// import Video from "../views/video/index.vue";
-import Video from "../views/video/addUrl.vue";
+import Video from "../views/video/index.vue";
+// import Video from "../views/video/addUrl.vue";
 
 const routes = [
   {
