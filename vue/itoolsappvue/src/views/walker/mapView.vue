@@ -134,8 +134,7 @@ export default {
     //     });
     //   }
     // });
-
-    this.$bus.$on("panTo", function(coordinate) {
+    function setUserPostionCenter(coordinate) {
       let myCenter = view.getCenter();
       myCenter[0] = coordinate[0];
       myCenter[1] = coordinate[1];
@@ -146,6 +145,10 @@ export default {
         duration: 1000
       });
       iconFeature.setGeometry(new Point(myCenter));
+    }
+
+    this.$bus.$on("panTo", function(coordinate) {
+      setUserPostionCenter(coordinate);
     });
   }
 };
