@@ -15,6 +15,9 @@ import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
 import { defaults as defaultControls } from "ol/control";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
+import { Draw, Modify, Snap } from "ol/interaction";
+import { LineString } from "ol/geom";
+import { transform } from "ol/proj";
 
 // import { onlineDomUrl } from "@/assets/js/config";
 
@@ -26,7 +29,11 @@ export default {
   //   }
   // },
   computed: {
-    ...mapGetters("map", ["getOnlineMapUrl", "getCurrentPostion"])
+    ...mapGetters("map", [
+      "getOnlineMapUrl",
+      "getCurrentPostion",
+      "getMapCurrentStatus"
+    ])
     // domurl() {
     //   return this.getOnlineMapUrl;
     // }
@@ -35,7 +42,9 @@ export default {
     return {
       onlineDomUrl: "",
       map: null,
-      onlineRasterSource: null
+      onlineRasterSource: null,
+      draw: null,
+      walkLineLayer: null
     };
   },
   watch: {
@@ -49,11 +58,48 @@ export default {
         this.onlineRasterSource.changed();
       },
       deep: true
+    },
+    getMapCurrentStatus(newVal) {
+      if (newVal == "start") {
+        this.drawWalkerLine();
+      }
     }
   },
   mounted() {
     let that = this;
     let center = [113.32053, 23.12504];
+
+    let markLabelStyle = new Style({
+      text: new Text({
+        font: "17px Calibri,sans-serif",
+        overflow: true,
+        fill: new Fill({
+          color: "rgba(255, 0, 0,1)",
+          width: 0.2
+        }),
+        stroke: new Stroke({
+          color: "rgba(255,255,255, 0.6)",
+          width: 4
+        }),
+        offsetY: -20
+      })
+    });
+    let marksStyle = new Style({
+      fill: new Fill({
+        color: "rgba(255, 255, 0, 1)"
+      }),
+      stroke: new Stroke({
+        color: "#ffcc33",
+        width: 10
+      }),
+      image: new CircleStyle({
+        radius: 7,
+        fill: new Fill({
+          color: "#ffcc33"
+        })
+      })
+    });
+    let styleWalkLine = [marksStyle, markLabelStyle];
 
     that.onlineDomUrl = that.getOnlineMapUrl.url;
     // 在线栅格地图
@@ -67,28 +113,22 @@ export default {
 
     //行走线段
     var walkLineSource = new VectorSource();
-    var walkLineVector = new VectorLayer({
+    that.walkLineLayer = new VectorLayer({
+      title: "walkLineLayer",
       source: walkLineSource,
-      style: new Style({
-        fill: new Fill({
-          color: "rgba(255, 255, 255, 0.2)"
-        }),
-        stroke: new Stroke({
-          color: "#ffcc33",
-          width: 2
-        }),
-        image: new CircleStyle({
-          radius: 7,
-          fill: new Fill({
-            color: "#ffcc33"
-          })
-        })
-      })
+      // style: function(feature) {
+      //   //根据这个字段显示label
+      //   markLabelStyle.getText().setText(feature.get("name"));
+      //   let reStyle = styleWalkLine;
+      //   return reStyle;
+      // }
+      style: marksStyle
     });
 
     //用户位置
     var iconFeature = new Feature({
-      geometry: new Point(center),
+      // geometry: new Point(center),
+      geometry: new Point([114.32053, 23.12504]),
       name: "whereami",
       population: 4000,
       rainfall: 500
@@ -121,7 +161,7 @@ export default {
       controls: defaultControls({
         zoom: false
       }),
-      layers: [onlineRaster, walkLineVector, iconLayer],
+      layers: [onlineRaster, that.walkLineLayer, iconLayer],
       target: "openLayers",
       view: view
     });
@@ -150,6 +190,50 @@ export default {
     this.$bus.$on("panTo", function(coordinate) {
       setUserPostionCenter(coordinate);
     });
+  },
+  methods: {
+    //划线
+    drawFeatureToLayer(layer, features) {
+      let that = this;
+      console.log("drawFeatureToLayer :>> ", features);
+      let reSource = new VectorSource({
+        features: [features]
+      });
+      that.walkLineLayer.setSource(reSource);
+      that.walkLineLayer.getSource().changed();
+      console.log(
+        "that.walkLineLayer :>> ",
+        that.walkLineLayer.getSource().getFeatures()
+      );
+    },
+
+    //获得线feature
+    drawWalkerLine() {
+      let that = this;
+      console.log("drawWalkerLine start :>> ");
+      let itemout = 0;
+      let center = [113.32053, 23.12504];
+      let lineGeometry = new LineString(center);
+      var feature = new Feature({
+        geometry: lineGeometry
+      });
+      var interval = setInterval(() => {
+        console.log("setInterval:>> ", itemout);
+        if (itemout == 5) {
+          clearInterval(interval);
+        } else {
+          center[0] += 0.1;
+          center[1] += 0.1;
+          itemout++;
+          lineGeometry.appendCoordinate(center);
+          feature.setGeometry(lineGeometry);
+          that.drawFeatureToLayer(that.walkLineLayer, feature);
+          // let geo2 = feature.getGeometry();
+          // console.log("geo2 :>> ", JSON.stringify(feature));
+        }
+      }, 1500);
+      console.log("drawWalkerLine end :>> ");
+    }
   }
 };
 </script>

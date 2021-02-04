@@ -21,14 +21,14 @@
         type="info"
         class="bottmBtn startBtn"
         round
-        @click="startWalker"
+        @click="pauseWalker"
       /><van-button
         icon="pause-circle-o"
         v-if="showPause"
         type="info"
         class="bottmBtn pauseBtn"
         round
-        @click="pauseWalker"
+        @click="startWalker"
       />
       <van-button
         icon="stop-circle-o"
@@ -90,6 +90,7 @@ export default {
     //暂停行走
     pauseWalker() {
       this.showPause = false;
+      this.setWalkerStatus("start");
     },
     //开始行走
     async startWalker() {
