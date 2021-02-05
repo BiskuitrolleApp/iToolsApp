@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import "vant/lib/index.css";
 import bus from "@/libs/bus";
+import Util from "@/assets/js/Util";
 
 import GPS from "@/libs/GPS";
 
@@ -16,7 +17,8 @@ import {
   CellGroup,
   NavBar,
   Field,
-  Popup
+  Popup,
+  Notify
 } from "vant";
 
 Vue.use(Tabbar);
@@ -28,13 +30,16 @@ Vue.use(Toast);
 Vue.use(Button);
 Vue.use(Field);
 Vue.use(Popup);
+Vue.use(Notify);
 
 Vue.config.productionTip = false;
 
-Vue.prototype.$bus = bus;
 window.$bus = bus;
-
+window.$Util = Util;
 window.$GPS = GPS;
+
+Vue.prototype.$bus = bus;
+Vue.prototype.$Util = Util;
 
 new Vue({
   router,

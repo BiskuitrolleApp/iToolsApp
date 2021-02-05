@@ -78,7 +78,22 @@ export default {
     this.setCurrentPostion(this.currentPostion);
   },
   computed: {
-    ...mapGetters("map", ["getOnlineMapUrl"])
+    ...mapGetters("map", ["getOnlineMapUrl", "getMapCurrentStatus"])
+  },
+  watch: {
+    getMapCurrentStatus(newVal) {
+      console.log("newVal :>> ", newVal);
+      if (newVal == "start") {
+        this.showPause = false;
+        this.showStop = true;
+      } else if (newVal == "pause") {
+        this.showPause = true;
+        this.showStop = true;
+      } else {
+        this.showPause = false;
+        this.showStop = false;
+      }
+    }
   },
   methods: {
     ...mapActions("map", ["setCurrMapUrl", "setWalkerStatus"]),
@@ -90,7 +105,7 @@ export default {
     //暂停行走
     pauseWalker() {
       this.showPause = false;
-      this.setWalkerStatus("start");
+      this.setWalkerStatus("pause");
     },
     //开始行走
     async startWalker() {

@@ -21,6 +21,9 @@
 import card from "@/components/card";
 import { views } from "@/assets/js/pageList.js";
 
+import { fileServer } from "@/assets/js/config.js";
+import _ from "lodash";
+
 export default {
   components: {
     card
@@ -31,7 +34,30 @@ export default {
       views
     };
   },
+  mounted() {
+    this.initCordovaPlugin();
+  },
   methods: {
+    bootCordova(callback) {
+      return new Promise((resolve, reject) => {
+        if (_.isNil(window.cordova)) {
+          resolve();
+        } else {
+          document.addEventListener(
+            "deviceready",
+            async () => {
+              try {
+                await callback();
+                resolve();
+              } catch (err) {
+                reject(err);
+              }
+            },
+            false
+          );
+        }
+      });
+    },
     jumbToUrl(pageInfo) {
       if (pageInfo.disabled) {
         this.$toast("当前地址无法进入");
@@ -39,6 +65,70 @@ export default {
       }
       this.$router.push(pageInfo.page);
       // window.location.href = "http://www.baidu.com";
+    },
+    async initCordovaPlugin() {
+      //Caution: This code will be move to cordova dictionary
+      let that = this;
+      try {
+        window.httpd = { enable: false };
+        await that.bootCordova(async () => {
+          //申请权限
+          let permissions = cordova.plugins.permissions;
+          permissions.requestPermissions(
+            [
+              permissions.INTERNET,
+              permissions.ACCESS_NETWORK_STATE,
+              permissions.CAMERA,
+              permissions.WRITE_EXTERNAL_STORAGE,
+              permissions.READ_EXTERNAL_STORAGE,
+              permissions.ACCESS_COARSE_LOCATION,
+              permissions.ACCESS_FINE_LOCATION
+            ],
+            () => {
+              // GPS.start()
+            },
+            () => {}
+          );
+
+          //启动内部服务
+          let root = $Util.getUrlPath(cordova.file.externalRootDirectory);
+          await new Promise((resolve, reject) => {
+            let httpd = cordova.plugins.CorHttpd;
+            httpd.getURL(url => {
+              if (url.length > 0) {
+                window.httpd = {
+                  enable: true,
+                  url
+                };
+                resolve();
+              } else {
+                httpd.startServer(
+                  {
+                    www_root: `${root}/iTools`,
+                    port: fileServer.port,
+                    localhost_only: false
+                  },
+                  url => {
+                    window.httpd = {
+                      enable: true,
+                      url
+                    };
+                    httpd.getLocalPath(path =>
+                      console.log("LOC PATH: " + path)
+                    );
+                    resolve();
+                  },
+                  err => {
+                    reject(err);
+                  }
+                );
+              }
+            });
+          });
+        });
+      } catch (err) {
+        alert(err);
+      }
     }
   }
 };

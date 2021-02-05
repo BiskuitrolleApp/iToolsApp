@@ -9,18 +9,19 @@ import Map from "ol/Map";
 import XYZ from "ol/source/XYZ";
 import View from "ol/View";
 import { Circle as CircleStyle, Fill, Stroke, Style, Icon } from "ol/style";
-// import { Draw, Modify, Snap } from "ol/interaction";
 import { Vector as VectorSource } from "ol/source";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
 import { defaults as defaultControls } from "ol/control";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
-import { Draw, Modify, Snap } from "ol/interaction";
+// import { Draw, Modify, Snap } from "ol/interaction";
 import { LineString } from "ol/geom";
-import { transform } from "ol/proj";
+// import { transform } from "ol/proj";
 import GeoJSON from "ol/format/GeoJSON";
 
-// import { onlineDomUrl } from "@/assets/js/config";
+import { dateFormat } from "@/libs/format/timeFormat.js";
+import api from "@/libs/api";
+import _ from "lodash";
 
 export default {
   props: ["isStart"],
@@ -45,7 +46,9 @@ export default {
       map: null,
       onlineRasterSource: null,
       draw: null,
-      walkLineLayer: null
+      walkLineLayer: null,
+      walkLineFeature: null,
+      interval: null //计时器
     };
   },
   watch: {
@@ -62,7 +65,16 @@ export default {
     },
     getMapCurrentStatus(newVal) {
       if (newVal == "start") {
-        this.drawWalkerLine();
+        console.log("暂停 :>> ", newVal);
+      } else if (newVal == "end") {
+        clearInterval(this.interval);
+        this.interval = null;
+        this.saveWalkerLineFeature(this.walkLineFeature);
+      } else if (newVal == "pause") {
+        console.log("开始 :>> ", newVal);
+        if (this.interval == null) {
+          this.drawWalkerLine();
+        }
       }
     }
   },
@@ -70,37 +82,37 @@ export default {
     let that = this;
     let center = [113.32053, 23.12504];
 
-    let markLabelStyle = new Style({
-      text: new Text({
-        font: "17px Calibri,sans-serif",
-        overflow: true,
-        fill: new Fill({
-          color: "rgba(255, 0, 0,1)",
-          width: 0.2
-        }),
-        stroke: new Stroke({
-          color: "rgba(255,255,255, 0.6)",
-          width: 4
-        }),
-        offsetY: -20
-      })
-    });
+    // let markLabelStyle = new Style({
+    //   text: new Text({
+    //     font: "17px Calibri,sans-serif",
+    //     overflow: true,
+    //     fill: new Fill({
+    //       color: "rgba(255, 0, 0,1)",
+    //       width: 0.2
+    //     }),
+    //     stroke: new Stroke({
+    //       color: "rgba(255,255,255, 0.6)",
+    //       width: 1
+    //     }),
+    //     offsetY: -20
+    //   })
+    // });
     let marksStyle = new Style({
       fill: new Fill({
         color: "rgba(255, 255, 0, 1)"
       }),
       stroke: new Stroke({
         color: "#ffcc33",
-        width: 10
+        width: 4
       }),
       image: new CircleStyle({
-        radius: 7,
+        radius: 2,
         fill: new Fill({
           color: "#ffcc33"
         })
       })
     });
-    let styleWalkLine = [marksStyle, markLabelStyle];
+    // let styleWalkLine = [marksStyle, markLabelStyle];
 
     that.onlineDomUrl = that.getOnlineMapUrl.url;
     // 在线栅格地图
@@ -191,11 +203,13 @@ export default {
     this.$bus.$on("panTo", function(coordinate) {
       setUserPostionCenter(coordinate);
     });
+
+    that.drawWalkerLine();
   },
   methods: {
     //划线
     drawFeatureToLayer(layer, features) {
-      let that = this;
+      // let that = this;
       console.log("drawFeatureToLayer :>> ", features);
       let reSource = new VectorSource({
         features: [features]
@@ -212,23 +226,41 @@ export default {
       let itemout = 0;
       let center = [113.32053, 23.12504];
       let lineGeometry = new LineString([center]);
-      var feature = new Feature({
+      that.walkLineFeature = new Feature({
         geometry: lineGeometry
       });
-      var interval = setInterval(() => {
-        console.log("setInterval:>> ", itemout);
-        if (itemout == 5) {
-          clearInterval(interval);
-        } else {
-          center[0] += 0.1;
-          center[1] += 0.1;
-          itemout++;
-          lineGeometry.appendCoordinate(center);
-          feature.setGeometry(lineGeometry);
-          that.drawFeatureToLayer(that.walkLineLayer, feature);
+      that.interval = setInterval(() => {
+        if (this.getMapCurrentStatus == "pause") {
+          console.log("setInterval:>> ", itemout);
+          if (itemout == 5) {
+            clearInterval(that.interval);
+          } else {
+            center[0] += 0.0001;
+            center[1] += 0.0001;
+            itemout++;
+            lineGeometry.appendCoordinate(center);
+            that.walkLineFeature.setGeometry(lineGeometry);
+            that.drawFeatureToLayer(that.walkLineLayer, that.walkLineFeature);
+          }
         }
       }, 1500);
       // console.log("drawWalkerLine end :>> ", feature);
+    },
+
+    saveWalkerLineFeature(featrue) {
+      const convertor = new GeoJSON();
+      let _featrue = _.cloneDeep(featrue);
+
+      let dataName = "walkerLine" + dateFormat("YYmmdd", new Date());
+
+      _featrue.set("name", dataName);
+      let featureGeoJson = convertor.writeFeatureObject(_featrue);
+      let _walkerLineParams = {
+        name: dataName,
+        geojson: featureGeoJson
+      };
+
+      api.walker.save(dataName, _walkerLineParams);
     }
   }
 };
