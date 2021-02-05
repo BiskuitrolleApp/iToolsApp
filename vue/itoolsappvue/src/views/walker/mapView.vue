@@ -18,6 +18,7 @@ import Point from "ol/geom/Point";
 import { Draw, Modify, Snap } from "ol/interaction";
 import { LineString } from "ol/geom";
 import { transform } from "ol/proj";
+import GeoJSON from "ol/format/GeoJSON";
 
 // import { onlineDomUrl } from "@/assets/js/config";
 
@@ -155,7 +156,7 @@ export default {
       center: center,
       zoom: 17,
       maxZoom: 19,
-      minZoom: 4
+      minZoom: 1
     });
     that.map = new Map({
       controls: defaultControls({
@@ -199,12 +200,9 @@ export default {
       let reSource = new VectorSource({
         features: [features]
       });
-      that.walkLineLayer.setSource(reSource);
-      that.walkLineLayer.getSource().changed();
-      console.log(
-        "that.walkLineLayer :>> ",
-        that.walkLineLayer.getSource().getFeatures()
-      );
+      layer.setSource(reSource);
+      layer.getSource().changed();
+      // console.log("that.walkLineLayer :>> ", layer.getSource().getFeatures());
     },
 
     //获得线feature
@@ -213,7 +211,7 @@ export default {
       console.log("drawWalkerLine start :>> ");
       let itemout = 0;
       let center = [113.32053, 23.12504];
-      let lineGeometry = new LineString(center);
+      let lineGeometry = new LineString([center]);
       var feature = new Feature({
         geometry: lineGeometry
       });
@@ -228,11 +226,9 @@ export default {
           lineGeometry.appendCoordinate(center);
           feature.setGeometry(lineGeometry);
           that.drawFeatureToLayer(that.walkLineLayer, feature);
-          // let geo2 = feature.getGeometry();
-          // console.log("geo2 :>> ", JSON.stringify(feature));
         }
       }, 1500);
-      console.log("drawWalkerLine end :>> ");
+      // console.log("drawWalkerLine end :>> ", feature);
     }
   }
 };
