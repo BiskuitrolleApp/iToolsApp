@@ -18,10 +18,26 @@ class HandleLocalFileClass {
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
-            console.log("file system open: " + dirEntry.name);
+            console.log(
+              "file system open: " + JSON.stringify(dirEntry),
+              fileName,
+              dataObj
+            );
             resolve(createFile(dirEntry, fileName, dataObj, "JSON"));
           },
-          onErrorLoadFs
+          function(err) {
+            console.log("createAndWriteFile err :>> ", err);
+            console.log("创建文件夹:>> ");
+            // let root = cordova.file.externalRootDirectory;
+            window.resolveLocalFileSystemURL(root, function(dirEntry2) {
+              createBaseDir(dirEntry2, root, path.split("/"));
+            });
+
+            // createAndWriteFile(path, fileName, dataObj)
+            // console.log("file system open: " + dirEntry.name);
+            // resolve(createFile(dirEntry, fileName, dataObj, "JSON"));
+          }
+          // onErrorLoadFs
         );
       } catch (error) {
         reject(error);
@@ -296,17 +312,47 @@ function createDir(rootDirEntry, folders) {
   if (folders.length === 0) {
     return;
   }
+  console.log("createDir :>> ", rootDirEntry);
   rootDirEntry.getDirectory(
     folders[0],
     { create: true },
     function(dirEntry) {
-      // console.info(dirEntry.fullPath)
+      console.info("dirEntry", dirEntry.fullPath, dirEntry);
       if (folders.length) {
         createDir(dirEntry, folders.slice(1));
       }
     },
     onErrorGetDir
   );
+}
+
+/**
+ * 递归创建初始文件夹
+ * @param {*} folders 文件夹数组
+ */
+function createBaseDir(rootDirEntry, path, folders) {
+  if (folders[0] === "." || folders[0] === "") {
+    folders = folders.slice(1);
+  }
+  if (folders.length === 0) {
+    return;
+  }
+  let fullPath = path;
+  console.log("createBaseDir :>> ", rootDirEntry, path, folders);
+  if (folders[0] !== "." && folders[0] !== "") {
+    fullPath = fullPath + folders[0] + "/";
+    window.resolveLocalFileSystemURL(
+      fullPath,
+      function(dirEntry) {
+        console.log("folders for :>> ", folders, fullPath, rootDirEntry);
+        createBaseDir(dirEntry, fullPath, folders.slice(1, folders.length));
+      },
+      function(err) {
+        console.log("开始创建文件夹 :>> ", rootDirEntry, folders, err);
+        if (rootDirEntry != null) createDir(rootDirEntry, folders);
+      }
+    );
+  }
 }
 
 //将内容数据写入到文件中
@@ -385,6 +431,7 @@ function createFile(dirEntry, fileName, dataObj, type) {
         fileName,
         { create: true, exclusive: false },
         function(fileEntry) {
+          console.log("createFile fileEntry:>> ", fileEntry);
           if (type === "JSON") {
             resolve(writeFile(fileEntry, dataObj));
           } else if (type === "BLOB") {

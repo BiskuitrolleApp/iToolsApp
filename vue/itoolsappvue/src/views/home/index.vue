@@ -104,7 +104,7 @@ export default {
               } else {
                 httpd.startServer(
                   {
-                    www_root: `${root}/iTools`,
+                    www_root: `${root}iTools`,
                     port: fileServer.port,
                     localhost_only: false
                   },

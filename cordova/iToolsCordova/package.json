@@ -23,10 +23,10 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-file": {},
       "cordova-plugin-geolocation": {},
       "com.rjfun.cordova.httpd": {},
-      "cordova-plugin-android-permissions": {}
+      "cordova-plugin-android-permissions": {},
+      "cordova-plugin-file": {}
     },
     "platforms": [
       "android"
