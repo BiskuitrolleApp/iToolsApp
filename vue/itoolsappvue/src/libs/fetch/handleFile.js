@@ -25,19 +25,22 @@ class HandleLocalFileClass {
             );
             resolve(createFile(dirEntry, fileName, dataObj, "JSON"));
           },
-          function(err) {
-            console.log("createAndWriteFile err :>> ", err);
-            console.log("创建文件夹:>> ");
-            // let root = cordova.file.externalRootDirectory;
-            window.resolveLocalFileSystemURL(root, function(dirEntry2) {
-              createBaseDir(dirEntry2, root, path.split("/"));
-            });
-
-            // createAndWriteFile(path, fileName, dataObj)
-            // console.log("file system open: " + dirEntry.name);
-            // resolve(createFile(dirEntry, fileName, dataObj, "JSON"));
-          }
-          // onErrorLoadFs
+          // function(err) {
+          //   // console.log("createAndWriteFile err :>> ", err);
+          //   // console.log("创建文件夹:>> ");
+          //   // let root = cordova.file.externalRootDirectory;
+          //   window.resolveLocalFileSystemURL(
+          //     cordova.file.externalRootDirectory,
+          //     function(dirEntry2) {
+          //       createBaseDir(
+          //         dirEntry2,
+          //         cordova.file.externalRootDirectory,
+          //         path.split("/")
+          //       );
+          //     }
+          //   );
+          // }
+          onErrorLoadFs
         );
       } catch (error) {
         reject(error);
@@ -228,11 +231,18 @@ class HandleLocalFileClass {
       try {
         let root = cordova.file.externalRootDirectory;
         let fullPath = root + path;
+        // let fullPath = "file:///storage/emulated/0";
+        console.log("getFolderNames path :>> ", fullPath, root, path);
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
+            console.log(
+              "getFolderNames createReader :>> ",
+              dirEntry,
+              dirEntry.createReader()
+            );
             dirEntry.createReader().readEntries(function(entry_array) {
-              // console.log('getFolderNames entry_array :>> ', entry_array)
+              console.log("getFolderNames entry_array :>> ", entry_array);
               let folders = [];
               for (let i = 0; i < entry_array.length; i++) {
                 const element = entry_array[i];
@@ -284,12 +294,11 @@ class HandleLocalFileClass {
                   files.push(pushData);
                 }
               }
+              resolve(files);
             });
-          }
-          // onErrorLoadFs
+          },
+          onErrorLoadFs
         );
-        console.log("进入报错 :>> ");
-        resolve(files);
       } catch (error) {
         reject(error);
         console.log("getFilePaths error :>> ", error);
@@ -312,12 +321,12 @@ function createDir(rootDirEntry, folders) {
   if (folders.length === 0) {
     return;
   }
-  console.log("createDir :>> ", rootDirEntry);
+  console.log("createDir :>> ", rootDirEntry, folders[0] + "/", folders);
   rootDirEntry.getDirectory(
-    folders[0],
-    { create: true },
+    folders[0] + "/",
+    { create: true, exclusive: false },
     function(dirEntry) {
-      console.info("dirEntry", dirEntry.fullPath, dirEntry);
+      // console.info(dirEntry.fullPath)
       if (folders.length) {
         createDir(dirEntry, folders.slice(1));
       }

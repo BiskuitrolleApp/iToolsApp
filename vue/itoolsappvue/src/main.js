@@ -5,6 +5,7 @@ import store from "./store";
 import "vant/lib/index.css";
 import bus from "@/libs/bus";
 import Util from "@/assets/js/Util";
+import { _loadLocalConfigAsync } from "@/assets/js/initLocalDirectory";
 
 import GPS from "@/libs/GPS";
 
@@ -46,6 +47,8 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+
+_loadLocalConfigAsync();
 
 // // 更新app
 // function onFail() {
