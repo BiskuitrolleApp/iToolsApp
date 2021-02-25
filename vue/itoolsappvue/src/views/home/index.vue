@@ -92,6 +92,7 @@ export default {
 
           //启动内部服务
           let root = $Util.getUrlPath(cordova.file.externalRootDirectory);
+          console.log('root getUrlPath:>> ', root);
           await new Promise((resolve, reject) => {
             let httpd = cordova.plugins.CorHttpd;
             httpd.getURL(url => {
@@ -104,7 +105,7 @@ export default {
               } else {
                 httpd.startServer(
                   {
-                    www_root: `${root}iTools`,
+                    www_root: `${root}`,
                     port: fileServer.port,
                     localhost_only: false
                   },

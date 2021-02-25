@@ -25,21 +25,6 @@ class HandleLocalFileClass {
             );
             resolve(createFile(dirEntry, fileName, dataObj, "JSON"));
           },
-          // function(err) {
-          //   // console.log("createAndWriteFile err :>> ", err);
-          //   // console.log("创建文件夹:>> ");
-          //   // let root = cordova.file.externalRootDirectory;
-          //   window.resolveLocalFileSystemURL(
-          //     cordova.file.externalRootDirectory,
-          //     function(dirEntry2) {
-          //       createBaseDir(
-          //         dirEntry2,
-          //         cordova.file.externalRootDirectory,
-          //         path.split("/")
-          //       );
-          //     }
-          //   );
-          // }
           onErrorLoadFs
         );
       } catch (error) {
@@ -232,17 +217,10 @@ class HandleLocalFileClass {
         let root = cordova.file.externalRootDirectory;
         let fullPath = root + path;
         // let fullPath = "file:///storage/emulated/0";
-        console.log("getFolderNames path :>> ", fullPath, root, path);
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
-            console.log(
-              "getFolderNames createReader :>> ",
-              dirEntry,
-              dirEntry.createReader()
-            );
             dirEntry.createReader().readEntries(function(entry_array) {
-              console.log("getFolderNames entry_array :>> ", entry_array);
               let folders = [];
               for (let i = 0; i < entry_array.length; i++) {
                 const element = entry_array[i];
@@ -281,8 +259,6 @@ class HandleLocalFileClass {
           fullPath,
           function(dirEntry) {
             dirEntry.createReader().readEntries(function(entry_array) {
-              console.log("getFolderNames entry_array :>> ", entry_array);
-
               for (let i = 0; i < entry_array.length; i++) {
                 const element = entry_array[i];
                 if (element.isFile) {
@@ -333,35 +309,6 @@ function createDir(rootDirEntry, folders) {
     },
     onErrorGetDir
   );
-}
-
-/**
- * 递归创建初始文件夹
- * @param {*} folders 文件夹数组
- */
-function createBaseDir(rootDirEntry, path, folders) {
-  if (folders[0] === "." || folders[0] === "") {
-    folders = folders.slice(1);
-  }
-  if (folders.length === 0) {
-    return;
-  }
-  let fullPath = path;
-  console.log("createBaseDir :>> ", rootDirEntry, path, folders);
-  if (folders[0] !== "." && folders[0] !== "") {
-    fullPath = fullPath + folders[0] + "/";
-    window.resolveLocalFileSystemURL(
-      fullPath,
-      function(dirEntry) {
-        console.log("folders for :>> ", folders, fullPath, rootDirEntry);
-        createBaseDir(dirEntry, fullPath, folders.slice(1, folders.length));
-      },
-      function(err) {
-        console.log("开始创建文件夹 :>> ", rootDirEntry, folders, err);
-        if (rootDirEntry != null) createDir(rootDirEntry, folders);
-      }
-    );
-  }
 }
 
 //将内容数据写入到文件中

@@ -23,7 +23,7 @@ const onlineDomUrl = [
 ];
 
 const fileServer = {
-  port: 7533 // 文件服务端口
+  port: 7558 // 文件服务端口
 };
 
 export { color, onlineDomUrl, fileServer };

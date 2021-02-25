@@ -1,5 +1,6 @@
 // 读取json文件
-const axios = require("axios");
+// const axios = require("axios");
+import axios from "axios";
 
 class FetchJsonClass {
   /**
@@ -13,11 +14,11 @@ class FetchJsonClass {
         if (rsp.status === 200) {
           return rsp.data;
         } else {
-          return {};
+          return [];
         }
       })
       .catch(err => {
-        return {};
+        return [];
       });
   }
 }

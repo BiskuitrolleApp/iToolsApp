@@ -1,4 +1,4 @@
-import { handleLocalFile } from "../fetch";
+import { handleLocalFile, fetchJson } from "../fetch";
 import { fileServer } from "@/assets/js/config.js";
 
 import { Notify } from "vant";
@@ -20,13 +20,7 @@ export default {
   saveLine: async (fileName, data) => {
     let oldUpdate = [];
     try {
-      console.log("saveLine Files start:>> ");
-      const Files2 = await handleLocalFile.getFolderPaths("");
-      console.log("saveLine Files2 :>> ", Files2);
-
       const Files = await handleLocalFile.getFilePaths(dataPath);
-      console.log("saveLine Files :>> ", Files);
-
       if (findKeyInFiles(Files, fileName)) {
         oldUpdate = await fetchJson.getJson(
           `http://localhost:${fileServer.port}/${dataPath}${fileName}.json`

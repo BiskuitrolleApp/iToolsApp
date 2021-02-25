@@ -1,7 +1,7 @@
 const { handleLocalFile } = require("@/libs/fetch");
 
 const DEFAULT_OPTIONS = {
-  initDir: ["itools/warker/"]
+  initDir: ["itools/walker/"]
 };
 async function _loadLocalConfigAsync() {
   // await this._loadDefaultConfig()

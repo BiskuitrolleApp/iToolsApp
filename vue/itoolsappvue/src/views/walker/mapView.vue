@@ -48,7 +48,9 @@ export default {
       draw: null,
       walkLineLayer: null,
       walkLineFeature: null,
-      interval: null //计时器
+      interval: null, //计时器
+      view: null,
+      center: []
     };
   },
   watch: {
@@ -80,7 +82,7 @@ export default {
   },
   mounted() {
     let that = this;
-    let center = [113.32053, 23.12504];
+    // let center = [113.32053, 23.12504];
 
     // let markLabelStyle = new Style({
     //   text: new Text({
@@ -163,10 +165,10 @@ export default {
       })
     });
 
-    let view = new View({
+    that.view = new View({
       projection: "EPSG:4326",
-      center: center,
-      zoom: 17,
+      center: that.center,
+      zoom: 10,
       maxZoom: 19,
       minZoom: 1
     });
@@ -176,7 +178,7 @@ export default {
       }),
       layers: [onlineRaster, that.walkLineLayer, iconLayer],
       target: "openLayers",
-      view: view
+      view: that.view
     });
     // bus.$on(Events.MY_POSITION, () => {
     //   let myPosition = this.gpsPosition;
@@ -187,26 +189,26 @@ export default {
     //     });
     //   }
     // });
-    function setUserPostionCenter(coordinate) {
-      let myCenter = view.getCenter();
-      myCenter[0] = coordinate[0];
-      myCenter[1] = coordinate[1];
-      center = myCenter;
-      view.animate({
-        center: center,
-        zoom: 10,
-        duration: 1000
-      });
-      iconFeature.setGeometry(new Point(myCenter));
-    }
-
     this.$bus.$on("panTo", function(coordinate) {
-      setUserPostionCenter(coordinate);
+      that.setUserPostionCenter(coordinate);
+      iconFeature.setGeometry(new Point(that.center));
     });
 
     that.drawWalkerLine();
   },
   methods: {
+    setUserPostionCenter(coordinate) {
+      let that = this;
+      let myCenter = that.view.getCenter();
+      myCenter[0] = coordinate[0];
+      myCenter[1] = coordinate[1];
+      that.center = myCenter;
+      that.view.animate({
+        center: that.center,
+        zoom: 16,
+        duration: 1000
+      });
+    },
     //划线
     drawFeatureToLayer(layer, features) {
       // let that = this;
@@ -223,43 +225,64 @@ export default {
     drawWalkerLine() {
       let that = this;
       console.log("drawWalkerLine start :>> ");
-      let itemout = 0;
-      let center = [113.32053, 23.12504];
+      // let itemout = 0;
+      let center = that.center;
       let lineGeometry = new LineString([center]);
       that.walkLineFeature = new Feature({
         geometry: lineGeometry
       });
       that.interval = setInterval(() => {
-        if (this.getMapCurrentStatus == "pause") {
-          console.log("setInterval:>> ", itemout);
-          if (itemout == 5) {
-            clearInterval(that.interval);
-          } else {
-            center[0] += 0.0001;
-            center[1] += 0.0001;
-            itemout++;
-            lineGeometry.appendCoordinate(center);
-            that.walkLineFeature.setGeometry(lineGeometry);
-            that.drawFeatureToLayer(that.walkLineLayer, that.walkLineFeature);
-          }
+        if (that.getMapCurrentStatus == "pause") {
+          // console.log("setInterval:>> ", itemout);
+          // if (itemout == 5) {
+          //   clearInterval(that.interval);
+          // } else {
+          // center[0] += 0.0001;
+          // center[1] += 0.0001;
+          // itemout++;
+          navigator.geolocation.getCurrentPosition(function(position) {
+            if (
+              position.coords.latitude &&
+              position.coords.longitude &&
+              center != []
+            ) {
+              center = [position.coords.longitude, position.coords.latitude];
+            }
+          }, that.drawOnError);
+          that.setUserPostionCenter(center);
+          lineGeometry.appendCoordinate(center);
+          that.walkLineFeature.setGeometry(lineGeometry);
+          that.drawFeatureToLayer(that.walkLineLayer, that.walkLineFeature);
+          // }
         }
-      }, 1500);
+      }, 5000);
       // console.log("drawWalkerLine end :>> ", feature);
     },
 
+    //定位数据获取失败响应
+    drawOnError(error) {
+      console.log("error :>> ", error);
+      clearInterval(this.interval);
+      this.interval = null;
+      this.saveWalkerLineFeature(this.walkLineFeature);
+      Notify({ type: "danger", message: "无gps信号，请开启gps信号" });
+    },
+
+    //保存
     saveWalkerLineFeature(featrue) {
       const convertor = new GeoJSON();
       let _featrue = _.cloneDeep(featrue);
-
-      let dataName = "walkerLine" + dateFormat("YYmmdd", new Date());
+      let createTime = new Date();
+      let dataName = "walkerLine" + dateFormat("YYmmddHHMMSS", createTime);
 
       _featrue.set("name", dataName);
       let featureGeoJson = convertor.writeFeatureObject(_featrue);
       let _walkerLineParams = {
         name: dataName,
+        create_on: createTime.getTime(),
         geojson: featureGeoJson
       };
-
+      console.log("saveWalkerLineFeature :>> ", dataName, _walkerLineParams);
       api.walker.save(dataName, _walkerLineParams);
     }
   }
