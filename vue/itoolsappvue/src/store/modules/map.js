@@ -2,17 +2,22 @@ const state = {
   mapUrl: {
     name: "高德地图",
     icon: "德",
+    coordtransform:true,
     url:
       "https://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}"
   },
   currentPostion: [113.32053, 23.12504],
-  mapCurrentStatus: "stop" //stop,pause,start
+  mapCurrentStatus: "stop", //stop,pause,start
+  mapSettings:{
+    timeInterval:3000, //3000毫秒打一次点
+  }
 };
 
 const getters = {
   getOnlineMapUrl: state => state.mapUrl,
   getCurrentPostion: state => state.currentPostion,
-  getMapCurrentStatus: state => state.mapCurrentStatus
+  getMapCurrentStatus: state => state.mapCurrentStatus,
+  getMapSettings:state => state.mapSettings,
 };
 
 const mutations = {

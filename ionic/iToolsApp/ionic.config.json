@@ -1,7 +1,0 @@
-{
-  "name": "iToolsApp",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "vue"
-}

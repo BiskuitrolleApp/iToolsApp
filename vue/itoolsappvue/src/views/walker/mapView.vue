@@ -16,12 +16,14 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 // import { Draw, Modify, Snap } from "ol/interaction";
 import { LineString } from "ol/geom";
-// import { transform } from "ol/proj";
 import GeoJSON from "ol/format/GeoJSON";
 
 import { dateFormat } from "@/libs/format/timeFormat.js";
 import api from "@/libs/api";
 import _ from "lodash";
+import { Notify } from "vant";
+
+import coordtransform from "@/libs/format/coordtransform.js";
 
 export default {
   props: ["isStart"],
@@ -34,7 +36,8 @@ export default {
     ...mapGetters("map", [
       "getOnlineMapUrl",
       "getCurrentPostion",
-      "getMapCurrentStatus"
+      "getMapCurrentStatus",
+      "getMapSettings"
     ])
     // domurl() {
     //   return this.getOnlineMapUrl;
@@ -43,6 +46,7 @@ export default {
   data() {
     return {
       onlineDomUrl: "",
+      isCoordtransform: true,
       map: null,
       onlineRasterSource: null,
       draw: null,
@@ -50,7 +54,8 @@ export default {
       walkLineFeature: null,
       interval: null, //计时器
       view: null,
-      center: []
+      iconFeature: null,
+      center: [116.3972282409668, 39.90960456049752]
     };
   },
   watch: {
@@ -58,7 +63,12 @@ export default {
     getOnlineMapUrl: {
       handler(newVal) {
         this.onlineDomUrl = newVal.url;
-        console.log("onlineDomUrl :>> ", this.onlineDomUrl);
+        this.isCoordtransform = newVal.isCoordtransform;
+        let corrd = this.getNowPostion();
+        if (corrd.length == 2) {
+          this.center = corrd;
+        }
+        this.panToPoints(this.center);
         this.onlineRasterSource.clear();
         this.onlineRasterSource.setUrl(this.onlineDomUrl);
         this.onlineRasterSource.changed();
@@ -82,23 +92,13 @@ export default {
   },
   mounted() {
     let that = this;
-    // let center = [113.32053, 23.12504];
 
-    // let markLabelStyle = new Style({
-    //   text: new Text({
-    //     font: "17px Calibri,sans-serif",
-    //     overflow: true,
-    //     fill: new Fill({
-    //       color: "rgba(255, 0, 0,1)",
-    //       width: 0.2
-    //     }),
-    //     stroke: new Stroke({
-    //       color: "rgba(255,255,255, 0.6)",
-    //       width: 1
-    //     }),
-    //     offsetY: -20
-    //   })
-    // });
+    let corrd = that.getNowPostion();
+    if (corrd.length == 2) {
+      that.center = corrd;
+    }
+    console.log("that.center :>> ", that.center);
+
     let marksStyle = new Style({
       fill: new Fill({
         color: "rgba(255, 255, 0, 1)"
@@ -114,9 +114,14 @@ export default {
         })
       })
     });
-    // let styleWalkLine = [marksStyle, markLabelStyle];
 
     that.onlineDomUrl = that.getOnlineMapUrl.url;
+    // let poiRaster = new TileLayer({
+    //   source: new XYZ({
+    //       url:"http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=e0b9067bb1f4c5ac661ae5bc3999535f"
+    //   })
+    // });
+
     // 在线栅格地图
     that.onlineRasterSource = new XYZ({
       url: that.onlineDomUrl,
@@ -131,18 +136,11 @@ export default {
     that.walkLineLayer = new VectorLayer({
       title: "walkLineLayer",
       source: walkLineSource,
-      // style: function(feature) {
-      //   //根据这个字段显示label
-      //   markLabelStyle.getText().setText(feature.get("name"));
-      //   let reStyle = styleWalkLine;
-      //   return reStyle;
-      // }
       style: marksStyle
     });
 
     //用户位置
-    var iconFeature = new Feature({
-      // geometry: new Point(center),
+    that.iconFeature = new Feature({
       geometry: new Point([114.32053, 23.12504]),
       name: "whereami",
       population: 4000,
@@ -150,7 +148,7 @@ export default {
     });
 
     var iconSource = new VectorSource({
-      features: [iconFeature]
+      features: [that.iconFeature]
     });
     var iconLayer = new VectorLayer({
       source: iconSource,
@@ -176,43 +174,55 @@ export default {
       controls: defaultControls({
         zoom: false
       }),
-      layers: [onlineRaster, that.walkLineLayer, iconLayer],
+      layers: [
+        onlineRaster,
+        // poiRaster,
+        that.walkLineLayer,
+        iconLayer
+      ],
       target: "openLayers",
       view: that.view
     });
-    // bus.$on(Events.MY_POSITION, () => {
-    //   let myPosition = this.gpsPosition;
-    //   if (myPosition.longitude !== 0 && myPosition.latitude !== 0) {
-    //     view.animate({
-    //       zoom: 19,
-    //       center: [myPosition.longitude, myPosition.latitude]
-    //     });
-    //   }
-    // });
-    this.$bus.$on("panTo", function(coordinate) {
-      that.setUserPostionCenter(coordinate);
-      iconFeature.setGeometry(new Point(that.center));
+
+    that.$bus.$on("panTo", function(coordinate) {
+      that.panToPoints(coordinate);
     });
 
-    that.drawWalkerLine();
+    // that.drawWalkerLine();
   },
   methods: {
-    setUserPostionCenter(coordinate) {
+    panToPoints(coordinate) {
+      let newCoor = coordinate;
+      if (this.isCoordtransform) {
+        newCoor = coordtransform.wgs84togcj02(coordinate[0], coordinate[1]);
+      }
+      console.log("this.center :>> ", newCoor);
+      this.center = newCoor;
+      this.setUserPostionCenter(coordinate);
+      this.iconFeature.setGeometry(new Point(newCoor));
+    },
+    setUserPostionCenter(coordinate, zoom) {
       let that = this;
+      if (zoom === undefined) {
+        zoom = 16;
+      }
+      let newCoor = coordinate;
+      if (that.isCoordtransform) {
+        newCoor = coordtransform.wgs84togcj02(coordinate[0], coordinate[1]);
+      }
       let myCenter = that.view.getCenter();
-      myCenter[0] = coordinate[0];
-      myCenter[1] = coordinate[1];
-      that.center = myCenter;
+      myCenter[0] = newCoor[0];
+      myCenter[1] = newCoor[1];
+      that.center = newCoor;
       that.view.animate({
         center: that.center,
-        zoom: 16,
+        zoom: zoom,
         duration: 1000
       });
     },
     //划线
     drawFeatureToLayer(layer, features) {
       // let that = this;
-      console.log("drawFeatureToLayer :>> ", features);
       let reSource = new VectorSource({
         features: [features]
       });
@@ -224,7 +234,10 @@ export default {
     //获得线feature
     drawWalkerLine() {
       let that = this;
-      console.log("drawWalkerLine start :>> ");
+      let corrd = that.getNowPostion();
+      if (corrd.length == 2) {
+        that.setUserPostionCenter([corrd.longitude, corrd.latitude], 18);
+      }
       // let itemout = 0;
       let center = that.center;
       let lineGeometry = new LineString([center]);
@@ -233,13 +246,6 @@ export default {
       });
       that.interval = setInterval(() => {
         if (that.getMapCurrentStatus == "pause") {
-          // console.log("setInterval:>> ", itemout);
-          // if (itemout == 5) {
-          //   clearInterval(that.interval);
-          // } else {
-          // center[0] += 0.0001;
-          // center[1] += 0.0001;
-          // itemout++;
           navigator.geolocation.getCurrentPosition(function(position) {
             if (
               position.coords.latitude &&
@@ -247,15 +253,16 @@ export default {
               center != []
             ) {
               center = [position.coords.longitude, position.coords.latitude];
+              that.center = center;
             }
           }, that.drawOnError);
-          that.setUserPostionCenter(center);
+          that.setUserPostionCenter(center, 18);
           lineGeometry.appendCoordinate(center);
           that.walkLineFeature.setGeometry(lineGeometry);
           that.drawFeatureToLayer(that.walkLineLayer, that.walkLineFeature);
           // }
         }
-      }, 5000);
+      }, that.getMapSettings.timeInterval);
       // console.log("drawWalkerLine end :>> ", feature);
     },
 
@@ -273,6 +280,7 @@ export default {
       const convertor = new GeoJSON();
       let _featrue = _.cloneDeep(featrue);
       let createTime = new Date();
+      let fileName = "walkerLine" + dateFormat("YYmmdd", createTime);
       let dataName = "walkerLine" + dateFormat("YYmmddHHMMSS", createTime);
 
       _featrue.set("name", dataName);
@@ -282,8 +290,18 @@ export default {
         create_on: createTime.getTime(),
         geojson: featureGeoJson
       };
-      console.log("saveWalkerLineFeature :>> ", dataName, _walkerLineParams);
-      api.walker.save(dataName, _walkerLineParams);
+      // console.log("saveWalkerLineFeature :>> ", dataName, _walkerLineParams);
+      api.walker.save(fileName, _walkerLineParams);
+    },
+
+    //获得当前位置
+    getNowPostion() {
+      let that = this;
+      let data = [];
+      navigator.geolocation.getCurrentPosition(function(position) {
+        data = [position.coords.longitude, position.coords.latitude];
+      }, that.drawOnError);
+      return data;
     }
   }
 };

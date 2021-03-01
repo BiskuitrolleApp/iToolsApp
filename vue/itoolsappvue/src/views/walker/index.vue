@@ -5,6 +5,7 @@
       left-text="返回"
       left-arrow
       @click-left="onClickLeft"
+      :fixed="true"
     />
     <map-view class="map" start="isStart"></map-view>
     <div>
@@ -148,6 +149,7 @@ export default {
 .map {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
   .bottmBtn {
     position: fixed;
     bottom: 40px;
