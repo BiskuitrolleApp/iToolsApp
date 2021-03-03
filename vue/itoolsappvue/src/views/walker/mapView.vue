@@ -21,7 +21,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import { dateFormat } from "@/libs/format/timeFormat.js";
 import api from "@/libs/api";
 import _ from "lodash";
-import { Notify } from "vant";
+import { Notify, Toast } from "vant";
 
 import coordtransform from "@/libs/format/coordtransform.js";
 
@@ -52,10 +52,12 @@ export default {
       draw: null,
       walkLineLayer: null,
       walkLineFeature: null,
+      saveFeature: null, //gps获得的真实保存feature
       interval: null, //计时器
       view: null,
       iconFeature: null,
-      center: [116.3972282409668, 39.90960456049752]
+      gpsCenter: [116.3972282409668, 39.90960456049752], //gps获得的中心点
+      computedCenter: [116.3972282409668, 39.90960456049752] //计算后的中心店
     };
   },
   watch: {
@@ -64,26 +66,26 @@ export default {
       handler(newVal) {
         this.onlineDomUrl = newVal.url;
         this.isCoordtransform = newVal.isCoordtransform;
-        let corrd = this.getNowPostion();
-        if (corrd.length == 2) {
-          this.center = corrd;
-        }
-        this.panToPoints(this.center);
+        this.setCenterToNowPostion();
         this.onlineRasterSource.clear();
         this.onlineRasterSource.setUrl(this.onlineDomUrl);
         this.onlineRasterSource.changed();
+        // this.setCenterToNowPostion();
       },
       deep: true
     },
     getMapCurrentStatus(newVal) {
+      console.log("newVal :>> ", newVal);
       if (newVal == "start") {
-        console.log("暂停 :>> ", newVal);
+        // console.log("暂停 :>> ", newVal);
       } else if (newVal == "end") {
+        console.log("this.saveFeature :>> ", this.saveFeature);
         clearInterval(this.interval);
         this.interval = null;
-        this.saveWalkerLineFeature(this.walkLineFeature);
+        this.saveWalkerLineFeature(this.saveFeature);
       } else if (newVal == "pause") {
-        console.log("开始 :>> ", newVal);
+        // console.log("开始 :>> ", newVal);
+        this.setCenterToNowPostion();
         if (this.interval == null) {
           this.drawWalkerLine();
         }
@@ -92,12 +94,7 @@ export default {
   },
   mounted() {
     let that = this;
-
-    let corrd = that.getNowPostion();
-    if (corrd.length == 2) {
-      that.center = corrd;
-    }
-    console.log("that.center :>> ", that.center);
+    that.setCenterToNowPostion();
 
     let marksStyle = new Style({
       fill: new Fill({
@@ -165,7 +162,7 @@ export default {
 
     that.view = new View({
       projection: "EPSG:4326",
-      center: that.center,
+      center: that.computedCenter,
       zoom: 10,
       maxZoom: 19,
       minZoom: 1
@@ -191,35 +188,36 @@ export default {
     // that.drawWalkerLine();
   },
   methods: {
+    //设置用户位置到中心+标记用户位置
     panToPoints(coordinate) {
       let newCoor = coordinate;
       if (this.isCoordtransform) {
         newCoor = coordtransform.wgs84togcj02(coordinate[0], coordinate[1]);
       }
-      console.log("this.center :>> ", newCoor);
-      this.center = newCoor;
-      this.setUserPostionCenter(coordinate);
-      this.iconFeature.setGeometry(new Point(newCoor));
+      console.log("this.center :>> ", this.isCoordtransform, newCoor);
+      this.computedCenter = newCoor;
+      this.setUserPostionCenter(this.computedCenter);
+      this.iconFeature.setGeometry(new Point(this.computedCenter));
     },
+
+    //设置用户位置到中心
     setUserPostionCenter(coordinate, zoom) {
       let that = this;
       if (zoom === undefined) {
         zoom = 16;
       }
       let newCoor = coordinate;
-      if (that.isCoordtransform) {
-        newCoor = coordtransform.wgs84togcj02(coordinate[0], coordinate[1]);
-      }
       let myCenter = that.view.getCenter();
       myCenter[0] = newCoor[0];
       myCenter[1] = newCoor[1];
-      that.center = newCoor;
+      that.computedCenter = newCoor;
       that.view.animate({
-        center: that.center,
+        center: that.computedCenter,
         zoom: zoom,
         duration: 1000
       });
     },
+
     //划线
     drawFeatureToLayer(layer, features) {
       // let that = this;
@@ -234,31 +232,45 @@ export default {
     //获得线feature
     drawWalkerLine() {
       let that = this;
-      let corrd = that.getNowPostion();
-      if (corrd.length == 2) {
-        that.setUserPostionCenter([corrd.longitude, corrd.latitude], 18);
-      }
       // let itemout = 0;
-      let center = that.center;
-      let lineGeometry = new LineString([center]);
+      let gpsCenter = _.cloneDeep(that.gpsCenter); //要保存的gps获得的中心点
+      let computedCenter = _.cloneDeep(that.computedCenter); //绘制的获得的中心点
+
+      let gpsLineGeometry = new LineString([gpsCenter]); //要保存的gps获得的线段
+      let computedLineGeometry = new LineString([computedCenter]); //绘制的获得的线段
+
       that.walkLineFeature = new Feature({
-        geometry: lineGeometry
+        geometry: computedLineGeometry
       });
+      that.saveFeature = new Feature({
+        geometry: gpsLineGeometry
+      });
+
       that.interval = setInterval(() => {
         if (that.getMapCurrentStatus == "pause") {
           navigator.geolocation.getCurrentPosition(function(position) {
             if (
               position.coords.latitude &&
               position.coords.longitude &&
-              center != []
+              gpsCenter != []
             ) {
-              center = [position.coords.longitude, position.coords.latitude];
-              that.center = center;
+              gpsCenter = [position.coords.longitude, position.coords.latitude];
+              that.gpsCenter = gpsCenter;
+              that.computedCenter = coordtransform.wgs84togcj02(
+                gpsCenter[0],
+                gpsCenter[1]
+              );
             }
           }, that.drawOnError);
-          that.setUserPostionCenter(center, 18);
-          lineGeometry.appendCoordinate(center);
-          that.walkLineFeature.setGeometry(lineGeometry);
+
+          that.setUserPostionCenter(computedCenter, 18);
+
+          gpsLineGeometry.appendCoordinate(gpsCenter);
+          computedLineGeometry.appendCoordinate(computedCenter);
+
+          that.saveFeature.setGeometry(gpsLineGeometry);
+          that.walkLineFeature.setGeometry(computedLineGeometry);
+
           that.drawFeatureToLayer(that.walkLineLayer, that.walkLineFeature);
           // }
         }
@@ -271,7 +283,7 @@ export default {
       console.log("error :>> ", error);
       clearInterval(this.interval);
       this.interval = null;
-      this.saveWalkerLineFeature(this.walkLineFeature);
+      this.saveWalkerLineFeature(this.saveFeature);
       Notify({ type: "danger", message: "无gps信号，请开启gps信号" });
     },
 
@@ -290,18 +302,46 @@ export default {
         create_on: createTime.getTime(),
         geojson: featureGeoJson
       };
-      // console.log("saveWalkerLineFeature :>> ", dataName, _walkerLineParams);
+      console.log("saveWalkerLineFeature :>> ", dataName, _walkerLineParams);
       api.walker.save(fileName, _walkerLineParams);
     },
 
-    //获得当前位置
-    getNowPostion() {
+    //设置当前位置
+    setCenterToNowPostion() {
       let that = this;
-      let data = [];
-      navigator.geolocation.getCurrentPosition(function(position) {
-        data = [position.coords.longitude, position.coords.latitude];
-      }, that.drawOnError);
-      return data;
+      Toast.loading({
+        message: "校准位置中...",
+        forbidClick: true
+      });
+      let nowPostion = [];
+      // let nowPostion = this.getNowPostion();
+      // console.log("nowPostion :>> ", nowPostion);
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          nowPostion = [position.coords.longitude, position.coords.latitude];
+          // console.log("nowPostion :>> ", nowPostion);
+          if (
+            nowPostion == [] ||
+            !_.isNumber(nowPostion[0]) ||
+            !_.isNumber(nowPostion[1])
+          ) {
+            Toast.fail({
+              message: "校准失败,请手动校准"
+            });
+            // this.setCenterToNowPostion();
+          } else {
+            that.gpsCenter = nowPostion;
+            that.panToPoints(that.gpsCenter);
+          }
+        },
+        function(err) {
+          Toast.fail({
+            message: "校准失败,请手动校准"
+          });
+          that.drawOnError(err);
+        }
+      );
     }
   }
 };
