@@ -12,14 +12,13 @@ import GPS from "@/libs/GPS";
 import {
   Button,
   Tabbar,
-  Toast,
   TabbarItem,
   Cell,
   CellGroup,
   NavBar,
   Field,
   Popup,
-  Notify
+  Form
 } from "vant";
 
 Vue.use(Tabbar);
@@ -27,11 +26,10 @@ Vue.use(TabbarItem);
 Vue.use(Cell);
 Vue.use(CellGroup);
 Vue.use(NavBar);
-Vue.use(Toast);
 Vue.use(Button);
 Vue.use(Field);
+Vue.use(Form);
 Vue.use(Popup);
-Vue.use(Notify);
 
 Vue.config.productionTip = false;
 

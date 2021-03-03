@@ -24,6 +24,8 @@ export default {
   margin: 0px auto;
   // left: 5vw;
   padding: 10px 0px;
+  z-index: 2;
+  position: relative;
   .van-cell {
     position: relative;
     border-radius: 8px;

@@ -10,13 +10,13 @@ const onlineDomUrl = [
     url:
       "https://t2.tianditu.gov.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=e0b9067bb1f4c5ac661ae5bc3999535f"
   },
-  // {
-  //   name: "卫星图",
-  //   icon: "卫",
-  //   coordtransform: false,
-  //   url:
-  //     "https://t2.tianditu.gov.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=e0b9067bb1f4c5ac661ae5bc3999535f"
-  // },
+  {
+    name: "卫星图",
+    icon: "卫",
+    isCoordtransform: false,
+    url:
+      "https://t2.tianditu.gov.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=e0b9067bb1f4c5ac661ae5bc3999535f"
+  },
   // {
   //   name: "谷歌地图",
   //   icon: "谷",

@@ -27,11 +27,6 @@ import coordtransform from "@/libs/format/coordtransform.js";
 
 export default {
   props: ["isStart"],
-  // props: {
-  //   isStart: {
-  //     type: Boolean
-  //   }
-  // },
   computed: {
     ...mapGetters("map", [
       "getOnlineMapUrl",
@@ -39,13 +34,11 @@ export default {
       "getMapCurrentStatus",
       "getMapSettings"
     ])
-    // domurl() {
-    //   return this.getOnlineMapUrl;
-    // }
   },
   data() {
     return {
       onlineDomUrl: "",
+      poiRaster: null, //地名地址
       isCoordtransform: true,
       map: null,
       onlineRasterSource: null,
@@ -56,8 +49,8 @@ export default {
       interval: null, //计时器
       view: null,
       iconFeature: null,
-      gpsCenter: [116.3972282409668, 39.90960456049752], //gps获得的中心点
-      computedCenter: [116.3972282409668, 39.90960456049752] //计算后的中心店
+      gpsCenter: [113.324159319, 23.1061471625], //gps获得的中心点
+      computedCenter: [113.324159319, 23.1061471625] //计算后的中心店
     };
   },
   watch: {
@@ -70,16 +63,22 @@ export default {
         this.onlineRasterSource.clear();
         this.onlineRasterSource.setUrl(this.onlineDomUrl);
         this.onlineRasterSource.changed();
+        if (this.isCoordtransform) {
+          this.map.removeLayer(this.poiRaster);
+        } else {
+          this.map.removeLayer(this.poiRaster);
+          this.map.addLayer(this.poiRaster);
+        }
         // this.setCenterToNowPostion();
       },
       deep: true
     },
     getMapCurrentStatus(newVal) {
-      console.log("newVal :>> ", newVal);
+      // console.log("newVal :>> ", newVal);
       if (newVal == "start") {
         // console.log("暂停 :>> ", newVal);
       } else if (newVal == "end") {
-        console.log("this.saveFeature :>> ", this.saveFeature);
+        // console.log("this.saveFeature :>> ", this.saveFeature);
         clearInterval(this.interval);
         this.interval = null;
         this.saveWalkerLineFeature(this.saveFeature);
@@ -113,11 +112,13 @@ export default {
     });
 
     that.onlineDomUrl = that.getOnlineMapUrl.url;
-    // let poiRaster = new TileLayer({
-    //   source: new XYZ({
-    //       url:"http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=e0b9067bb1f4c5ac661ae5bc3999535f"
-    //   })
-    // });
+
+    that.poiRaster = new TileLayer({
+      source: new XYZ({
+        url:
+          "http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=e0b9067bb1f4c5ac661ae5bc3999535f"
+      })
+    });
 
     // 在线栅格地图
     that.onlineRasterSource = new XYZ({
@@ -194,7 +195,7 @@ export default {
       if (this.isCoordtransform) {
         newCoor = coordtransform.wgs84togcj02(coordinate[0], coordinate[1]);
       }
-      console.log("this.center :>> ", this.isCoordtransform, newCoor);
+      // console.log("this.center :>> ", this.isCoordtransform, newCoor);
       this.computedCenter = newCoor;
       this.setUserPostionCenter(this.computedCenter);
       this.iconFeature.setGeometry(new Point(this.computedCenter));
@@ -280,7 +281,7 @@ export default {
 
     //定位数据获取失败响应
     drawOnError(error) {
-      console.log("error :>> ", error);
+      // console.log("error :>> ", error);
       clearInterval(this.interval);
       this.interval = null;
       this.saveWalkerLineFeature(this.saveFeature);
@@ -302,7 +303,7 @@ export default {
         create_on: createTime.getTime(),
         geojson: featureGeoJson
       };
-      console.log("saveWalkerLineFeature :>> ", dataName, _walkerLineParams);
+      // console.log("saveWalkerLineFeature :>> ", dataName, _walkerLineParams);
       api.walker.save(fileName, _walkerLineParams);
     },
 

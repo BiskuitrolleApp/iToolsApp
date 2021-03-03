@@ -3,19 +3,23 @@
     <van-nav-bar
       title="步行者"
       left-text="返回"
+      right-text="设置"
       left-arrow
       @click-left="onClickLeft"
+      @click-right="onClickRight"
       :fixed="true"
     />
     <map-view class="map" start="isStart"></map-view>
+    <van-popup
+      v-model="showPopup"
+      round
+      closeable
+      close-icon="close"
+      position="bottom"
+      :style="{ height: '50%' }"
+      ><popup-form @visiblePopup="visiblePopup"></popup-form
+    ></van-popup>
     <div>
-      <!-- <van-button
-        :icon="isStart ? 'pause-circle-o' : 'play-circle-o'"
-        type="info"
-        class="bottmBtn startBtn"
-        round
-        @click="startWalker"
-      /> -->
       <van-button
         icon="play-circle-o"
         v-if="!showPause"
@@ -41,7 +45,12 @@
       />
     </div>
     <div>
-      <van-button type="info" class="sideBtn reload" round @click="reloadMap"
+      <van-button
+        type="info"
+        class="sideBtn reload"
+        round
+        @click="reloadMap"
+        :disabled="showPause"
         >{{ getOnlineMapUrl.icon }}
       </van-button>
       <van-button
@@ -50,24 +59,35 @@
         class="sideBtn mesidebtn"
         round
         @click="panToMyPostion"
+      >
+      </van-button>
+      <van-button
+        icon="eye-o"
+        type="info"
+        class="sideBtn recall"
+        round
+        @click="recallMap"
       />
     </div>
   </div>
 </template>
 <script>
 import mapView from "./mapView";
+import popupForm from "./components/popupForm";
 import { onlineDomUrl } from "@/assets/js/config";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   components: {
-    mapView
+    mapView,
+    popupForm
   },
   data() {
     return {
       mapIndex: 2,
       showPause: false,
       showStop: false,
+      showPopup: false,
       currentPostion: [113.32053, 23.12504]
     };
   },
@@ -141,7 +161,15 @@ export default {
     beforeDestroy() {
       console.log("stop :>> ");
       this.setWalkerStatus("stop");
-    }
+    },
+    //右边设置按钮
+    onClickRight() {
+      this.showPopup = true;
+    },
+    visiblePopup(value) {
+      this.showPopup = value;
+    },
+    recallMap() {}
   }
 };
 </script>
@@ -181,6 +209,9 @@ export default {
   }
   .mesidebtn {
     top: 160px;
+  }
+  .recall {
+    top: 220px;
   }
 }
 </style>

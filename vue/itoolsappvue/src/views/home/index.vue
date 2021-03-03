@@ -1,19 +1,26 @@
 <template>
   <div class="homepage">
-    <van-nav-bar title="主页" />
-    <div v-for="(lItem, lIndex) in views" :key="lIndex">
-      <div>
-        <h2 class="home_lable">{{ lItem.title }}</h2>
+    <van-nav-bar
+      title="主页"
+      :fixed="true"
+      :placeholder="true"
+      class="homeNavHeader"
+    />
+    <div class="pageList">
+      <div v-for="(lItem, lIndex) in views" :key="lIndex">
+        <div>
+          <h2 class="home_lable">{{ lItem.title }}</h2>
+        </div>
+        <span v-for="(pItem, pIndex) in lItem.list" :key="pIndex">
+          <card
+            :title="pItem.title"
+            :subtitle="pItem.subTitle"
+            :bg="pItem.bgi"
+            :disabled="pItem.disabled"
+            @click.native="jumbToUrl(pItem)"
+          ></card>
+        </span>
       </div>
-      <span v-for="(pItem, pIndex) in lItem.list" :key="pIndex">
-        <card
-          :title="pItem.title"
-          :subtitle="pItem.subTitle"
-          :bg="pItem.bgi"
-          :disabled="pItem.disabled"
-          @click.native="jumbToUrl(pItem)"
-        ></card>
-      </span>
     </div>
   </div>
 </template>
@@ -92,7 +99,7 @@ export default {
 
           //启动内部服务
           let root = $Util.getUrlPath(cordova.file.externalRootDirectory);
-          console.log('root getUrlPath:>> ', root);
+          console.log("root getUrlPath:>> ", root);
           await new Promise((resolve, reject) => {
             let httpd = cordova.plugins.CorHttpd;
             httpd.getURL(url => {
@@ -147,5 +154,9 @@ export default {
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
+}
+.homeNavHeader {
+  position: relative;
+  z-index: 3;
 }
 </style>
