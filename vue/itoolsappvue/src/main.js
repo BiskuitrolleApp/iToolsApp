@@ -18,7 +18,8 @@ import {
   NavBar,
   Field,
   Popup,
-  Form
+  Form,
+  Picker
 } from "vant";
 
 Vue.use(Tabbar);
@@ -30,6 +31,7 @@ Vue.use(Button);
 Vue.use(Field);
 Vue.use(Form);
 Vue.use(Popup);
+Vue.use(Picker);
 
 Vue.config.productionTip = false;
 

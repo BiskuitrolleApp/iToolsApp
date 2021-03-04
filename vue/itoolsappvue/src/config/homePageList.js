@@ -7,7 +7,7 @@ const views = [
         subTitle: "摄影单独边框",
         page: "/border/single",
         bgi: "img/bg/bg1.png",
-        disabled: false
+        disabled: true
       },
       {
         title: "批量边框",

@@ -1,7 +1,7 @@
 const { handleLocalFile } = require("@/libs/fetch");
 
 const DEFAULT_OPTIONS = {
-  initDir: ["itools/walker/"]
+  initDir: ["itools/walker/", "itools/video/"]
 };
 async function _loadLocalConfigAsync() {
   // await this._loadDefaultConfig()

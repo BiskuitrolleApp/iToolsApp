@@ -3,7 +3,7 @@ import { fileServer } from "@/config/mapConfig.js";
 
 import { Notify } from "vant";
 
-const dataPath = "itools/walker/";
+const dataPath = "itools/video/";
 
 function findKeyInFiles(projectIdFiles, fileName) {
   let isFind = false;
@@ -22,25 +22,30 @@ export default {
       `http://localhost:${fileServer.port}/${dataPath}${fileName}.json`
     );
   },
-  saveLine: async (fileName, data) => {
-    let oldUpdate = [];
+  save: async (fileName, data) => {
+    // let oldUpdate = [];
     try {
-      const Files = await handleLocalFile.getFilePaths(dataPath);
-      if (findKeyInFiles(Files, fileName)) {
-        oldUpdate = await fetchJson.getJson(
-          `http://localhost:${fileServer.port}/${dataPath}${fileName}.json`
-        );
-      }
-      console.log("saveLine Files end:>> ", oldUpdate, Files);
+      // const Files = await handleLocalFile.getFilePaths(dataPath);
+      // if (findKeyInFiles(Files, fileName)) {
+      //   oldUpdate = await fetchJson.getJson(
+      //     `http://localhost:${fileServer.port}/${dataPath}${fileName}.json`
+      //   );
+      // }
+      // console.log("saveLine Files end:>> ", oldUpdate, Files);
 
-      console.log("createAndWriteFile start:>> ");
-      oldUpdate.push(data);
+      // console.log("createAndWriteFile start:>> ");
+      // oldUpdate.push(data);
+      // let writeFile = await handleLocalFile.createAndWriteFile(
+      //   dataPath,
+      //   `${fileName}.json`,
+      //   oldUpdate
+      // );
       let writeFile = await handleLocalFile.createAndWriteFile(
         dataPath,
         `${fileName}.json`,
-        oldUpdate
+        data
       );
-      console.log("createAndWriteFile end:>> ", writeFile);
+      // console.log("createAndWriteFile end:>> ", writeFile);
       if (writeFile.success) {
         Notify({ type: "success", message: "保存成功" });
       } else {

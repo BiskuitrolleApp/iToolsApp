@@ -34,6 +34,11 @@ const routes = [
     path: "/walker",
     name: "walker",
     component: () => import("@/views/walker/index.vue")
+  },
+  {
+    path: "/iframe",
+    name: "iframe",
+    component: () => import("@/views/iframe/index.vue")
   }
 ];
 

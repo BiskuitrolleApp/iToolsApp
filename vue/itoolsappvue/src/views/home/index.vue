@@ -26,9 +26,9 @@
 </template>
 <script>
 import card from "@/components/card";
-import { views } from "@/assets/js/pageList.js";
+import { views } from "@/config/homePageList.js";
 
-import { fileServer } from "@/assets/js/config.js";
+import { fileServer } from "@/config/mapConfig.js";
 import _ from "lodash";
 
 export default {

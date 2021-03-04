@@ -2,9 +2,9 @@ import apiOffline from "../apiCordova";
 
 export default {
   listEstate: async fileName => {
-    return await apiOffline.walker.listEstate(fileName);
+    return await apiOffline.video.listEstate(fileName);
   },
   save: async (fileName, data) => {
-    return await apiOffline.walker.saveLine(fileName, data);
+    return await apiOffline.video.save(fileName, data);
   }
 };

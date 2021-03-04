@@ -74,7 +74,7 @@
 <script>
 import mapView from "./mapView";
 import popupForm from "./components/popupForm";
-import { onlineDomUrl } from "@/assets/js/config";
+import { onlineDomUrl } from "@/config/mapConfig.js";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
