@@ -152,7 +152,9 @@ export default {
       // this.$bus.$emit("reloadMap", onlineDomUrl[this.mapIndex]);
     },
     async panToMyPostion() {
+      // console.log("panToMyPostion :>> ", window.$GPS);
       let data = await window.$GPS.getPosition();
+      // console.log('panToMyPostion data :>> ', data);
       if (!data.longitude && !data.latitude) {
         this.currentPostion = [data.longitude, data.latitude];
       }

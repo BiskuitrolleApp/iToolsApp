@@ -13,6 +13,11 @@
       >
         <template #extra><span style="margin-left: 16px;">秒</span></template>
       </van-field>
+      <van-field name="centerModal" label="显示路径点">
+        <template #input>
+          <van-switch v-model="centerModal" size="20" />
+        </template>
+      </van-field>
       <div style="margin: 16px;">
         <van-button round block type="info" native-type="submit" size="small"
           >提交</van-button
@@ -29,7 +34,8 @@ import { Toast } from "vant";
 export default {
   data() {
     return {
-      timeInterval: 0
+      timeInterval: 0,
+      centerModal: false
     };
   },
   computed: {
@@ -39,17 +45,20 @@ export default {
     // }
   },
   mounted() {
-    this.timeInterval = _.cloneDeep(this.getMapSettings.timeInterval) / 1000;
+    let newSettings = _.cloneDeep(this.getMapSettings);
+    this.timeInterval = _.cloneDeep(newSettings.timeInterval) / 1000;
+    this.centerModal = _.cloneDeep(newSettings.centerModal);
   },
   methods: {
     ...mapMutations("map", ["setMapSettings"]),
     onSubmit(values) {
       let currSetting = {
-        timeInterval: parseInt(values.timeInterval) * 1000
+        timeInterval: parseInt(values.timeInterval) * 1000,
+        centerModal: values.centerModal
       };
       let setting = _.cloneDeep(this.getMapSettings);
       let newSting = _.assignIn(setting, currSetting);
-      // console.log("newSting :>> ", newSting);
+      // console.log("newSting :>> ", newSting, values);
       this.setMapSettings(newSting);
       this.$emit("visiblePopup", false);
       Toast.success({

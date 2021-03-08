@@ -1,3 +1,4 @@
+import _ from "lodash";
 const state = {
   mapUrl: {
     name: "高德地图",
@@ -9,7 +10,8 @@ const state = {
   currentPostion: [113.32053, 23.12504],
   mapCurrentStatus: "stop", //stop,pause,start
   mapSettings: {
-    timeInterval: 3000 //3000毫秒打一次点
+    timeInterval: 3000, //3000毫秒打一次点
+    centerModal: false
   }
 };
 
@@ -32,6 +34,11 @@ const mutations = {
   },
   setMapSettings(state, payload) {
     state.mapSettings = payload;
+  },
+  setMapSettingsItem(state, payload) {
+    let data = _.cloneDeep(state.mapSettings);
+    let newSting = _.assignIn(data, payload);
+    state.mapSettings = newSting;
   }
 };
 

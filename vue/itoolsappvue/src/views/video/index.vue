@@ -5,7 +5,7 @@
       left-text="返回"
       left-arrow
       @click-left="onClickLeft"
-    />
+    ></van-nav-bar>
     <div class="videoForm">
       <van-form @submit="openAddress">
         <van-field
@@ -94,23 +94,30 @@ export default {
     };
   },
   async mounted() {
-    let _list = await api.video.listEstate("saveUrl");
-    if (_list != "" && _list != []) this.urlList = _list;
+    try {
+      let _list = await api.video.listEstate("saveUrl");
+      if (_list != "" && _list != [] && _list.constructor == Array)
+        this.urlList = _list;
+    } catch (error) {
+      Notify({ type: "danger", message: "读取解析文件失败：" + error });
+    }
   },
   computed: {
     selectLabel() {
       let data = [];
       console.log("urlList :>> ", this.urlList);
-      this.urlList.forEach(element => {
-        data.push(element.name);
-      });
+      if (this.urlList.constructor == Array)
+        this.urlList.forEach(element => {
+          data.push(element.name);
+        });
       return data;
     },
     selectValue() {
       let data = [];
-      this.urlList.forEach(element => {
-        data.push(element.url);
-      });
+      if (this.urlList.constructor == Array)
+        this.urlList.forEach(element => {
+          data.push(element.url);
+        });
       return data;
     }
   },

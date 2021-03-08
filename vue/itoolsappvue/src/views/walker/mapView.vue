@@ -1,8 +1,15 @@
 <template>
-  <div id="openLayers"></div>
+  <div>
+    <div id="openLayers"></div>
+    <div class="centerModal" v-if="getMapSettings.centerModal">
+      <p v-for="(item, index) in centerListArray" :key="index">
+        {{ item[0] }},{{ item[1] }}
+      </p>
+    </div>
+  </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 import "ol/ol.css";
 import Map from "ol/Map";
@@ -50,7 +57,8 @@ export default {
       view: null,
       iconFeature: null,
       gpsCenter: [113.324159319, 23.1061471625], //gps获得的中心点
-      computedCenter: [113.324159319, 23.1061471625] //计算后的中心店
+      computedCenter: [113.324159319, 23.1061471625], //计算后的中心店
+      centerListArray: [[113.324159319, 23.1061471625]]
     };
   },
   watch: {
@@ -79,11 +87,13 @@ export default {
         // console.log("暂停 :>> ", newVal);
       } else if (newVal == "end") {
         // console.log("this.saveFeature :>> ", this.saveFeature);
+        this.setMapSettingsItem({ centerModal: false });
         clearInterval(this.interval);
         this.interval = null;
         this.saveWalkerLineFeature(this.saveFeature);
       } else if (newVal == "pause") {
         // console.log("开始 :>> ", newVal);
+        this.setMapSettingsItem({ centerModal: true });
         this.setCenterToNowPostion();
         if (this.interval == null) {
           this.drawWalkerLine();
@@ -189,6 +199,7 @@ export default {
     // that.drawWalkerLine();
   },
   methods: {
+    ...mapMutations("map", ["setMapSettingsItem"]),
     //设置用户位置到中心+标记用户位置
     panToPoints(coordinate) {
       let newCoor = coordinate;
@@ -247,22 +258,35 @@ export default {
         geometry: gpsLineGeometry
       });
 
-      that.interval = setInterval(() => {
+      that.interval = setInterval(async () => {
         if (that.getMapCurrentStatus == "pause") {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            if (
-              position.coords.latitude &&
-              position.coords.longitude &&
-              gpsCenter != []
-            ) {
-              gpsCenter = [position.coords.longitude, position.coords.latitude];
+          try {
+            let position = await window.$GPS.getPosition();
+
+            if (position.latitude && position.longitude && gpsCenter != []) {
+              gpsCenter = [position.longitude, position.latitude];
               that.gpsCenter = gpsCenter;
               that.computedCenter = coordtransform.wgs84togcj02(
-                gpsCenter[0],
-                gpsCenter[1]
+                position.longitude,
+                position.latitude
               );
+              that.setCenterListArray(gpsCenter);
             }
-          }, that.drawOnError);
+          } catch (error) {
+            that.drawOnError(error);
+          }
+          // navigator.geolocation.getCurrentPosition(function(position) {
+          // if (position.latitude && position.longitude && gpsCenter != []) {
+          //   gpsCenter = [position.longitude, position.latitude];
+          //   that.gpsCenter = gpsCenter;
+          //   that.computedCenter = coordtransform.wgs84togcj02(
+          //     position.longitude,
+          //     position.latitude
+          //   );
+
+          //   that.setCenterListArray(gpsCenter);
+          // }
+          // }, that.drawOnError);
 
           that.setUserPostionCenter(computedCenter, 18);
 
@@ -281,7 +305,7 @@ export default {
 
     //定位数据获取失败响应
     drawOnError(error) {
-      // console.log("error :>> ", error);
+      console.log("error :>> ", error);
       clearInterval(this.interval);
       this.interval = null;
       this.saveWalkerLineFeature(this.saveFeature);
@@ -308,7 +332,7 @@ export default {
     },
 
     //设置当前位置
-    setCenterToNowPostion() {
+    async setCenterToNowPostion() {
       let that = this;
       Toast.loading({
         message: "校准位置中...",
@@ -316,33 +340,62 @@ export default {
       });
       let nowPostion = [];
       // let nowPostion = this.getNowPostion();
-      // console.log("nowPostion :>> ", nowPostion);
-
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          nowPostion = [position.coords.longitude, position.coords.latitude];
-          // console.log("nowPostion :>> ", nowPostion);
-          if (
-            nowPostion == [] ||
-            !_.isNumber(nowPostion[0]) ||
-            !_.isNumber(nowPostion[1])
-          ) {
-            Toast.fail({
-              message: "校准失败,请手动校准"
-            });
-            // this.setCenterToNowPostion();
-          } else {
-            that.gpsCenter = nowPostion;
-            that.panToPoints(that.gpsCenter);
-          }
-        },
-        function(err) {
+      // console.log("nowPostion :>> ", );
+      try {
+        let position = await window.$GPS.getPosition();
+        nowPostion = [position.longitude, position.latitude];
+        if (
+          nowPostion == [] ||
+          !_.isNumber(nowPostion[0]) ||
+          !_.isNumber(nowPostion[1])
+        ) {
           Toast.fail({
             message: "校准失败,请手动校准"
           });
-          that.drawOnError(err);
+        } else {
+          that.gpsCenter = nowPostion;
+          that.panToPoints(that.gpsCenter);
         }
-      );
+      } catch (error) {
+        Toast.fail({
+          message: "校准失败,请手动校准"
+        });
+        that.drawOnError(error);
+      }
+
+      // navigator.geolocation.getCurrentPosition(
+      //   function(position) {
+      //     nowPostion = [position.coords.longitude, position.coords.latitude];
+      //     // console.log("nowPostion :>> ", nowPostion);
+      //     if (
+      //       nowPostion == [] ||
+      //       !_.isNumber(nowPostion[0]) ||
+      //       !_.isNumber(nowPostion[1])
+      //     ) {
+      //       Toast.fail({
+      //         message: "校准失败,请手动校准"
+      //       });
+      //       // this.setCenterToNowPostion();
+      //     } else {
+      //       that.gpsCenter = nowPostion;
+      //       that.panToPoints(that.gpsCenter);
+      //     }
+      //   },
+      //   function(err) {
+      //     Toast.fail({
+      //       message: "校准失败,请手动校准"
+      //     });
+      //     that.drawOnError(err);
+      //   }
+      // );
+    },
+
+    //添加路径点列表
+    setCenterListArray(position) {
+      if (this.centerListArray.length > 10) {
+        this.centerListArray.pop();
+      }
+      this.centerListArray.unshift(position);
     }
   }
 };
@@ -354,5 +407,19 @@ export default {
 }
 .ol-overlaycontainer-stopevent {
   display: none;
+}
+.centerModal {
+  position: fixed;
+  z-index: 3;
+  height: 150px;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.3);
+  top: 60px;
+  left: 10px;
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px;
+  overflow: hidden;
+  text-align: center;
 }
 </style>

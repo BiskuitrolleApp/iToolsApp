@@ -19,7 +19,11 @@ import {
   Field,
   Popup,
   Form,
-  Picker
+  Picker,
+  Icon,
+  Popover,
+  Switch,
+  ShareSheet
 } from "vant";
 
 Vue.use(Tabbar);
@@ -32,6 +36,10 @@ Vue.use(Field);
 Vue.use(Form);
 Vue.use(Popup);
 Vue.use(Picker);
+Vue.use(Icon);
+Vue.use(Popover);
+Vue.use(Switch);
+Vue.use(ShareSheet);
 
 Vue.config.productionTip = false;
 

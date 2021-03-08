@@ -1,0 +1,31 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "com.rjfun.cordova.httpd": {
+      "PACKAGE_NAME": "org.cordova.itools"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "org.cordova.itools"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "org.cordova.itools"
+    },
+    "cordova-plugin-geolocation": {
+      "GPS_REQUIRED": "true",
+      "PACKAGE_NAME": "org.cordova.itools"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "org.cordova.itools"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "org.cordova.itools"
+    }
+  },
+  "dependent_plugins": {}
+}
