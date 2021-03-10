@@ -56,9 +56,15 @@ export default {
       interval: null, //计时器
       view: null,
       iconFeature: null,
+      startIconFeature: null,
+      walkerIconFeature: null,
+      iconLayer: null,
+      startIconLayer: null,
+      walkerIconLayer: null,
       gpsCenter: [113.324159319, 23.1061471625], //gps获得的中心点
       computedCenter: [113.324159319, 23.1061471625], //计算后的中心店
-      centerListArray: [[113.324159319, 23.1061471625]]
+      centerListArray: [[113.324159319, 23.1061471625]],
+      startPoint: [0, 0]
     };
   },
   watch: {
@@ -92,9 +98,14 @@ export default {
         this.interval = null;
         this.saveWalkerLineFeature(this.saveFeature);
       } else if (newVal == "pause") {
+        this.iconLayer.setVisible(false);
+        this.startIconLayer.setVisible(true);
+        this.walkerIconLayer.setVisible(true);
         // console.log("开始 :>> ", newVal);
         this.setMapSettingsItem({ centerModal: true });
         this.setCenterToNowPostion();
+        this.startIconFeature.setGeometry(new Point(this.computedCenter));
+        this.walkerIconFeature.setGeometry(new Point(this.computedCenter));
         if (this.interval == null) {
           this.drawWalkerLine();
         }
@@ -154,19 +165,64 @@ export default {
       population: 4000,
       rainfall: 500
     });
-
     var iconSource = new VectorSource({
       features: [that.iconFeature]
     });
-    var iconLayer = new VectorLayer({
+    that.iconLayer = new VectorLayer({
       source: iconSource,
       style: new Style({
         image: new Icon({
           anchor: [0.5, 46],
           anchorXUnits: "fraction",
           anchorYUnits: "pixels",
-          src: "img/local.png",
+          src: "img/mapicon/local.png",
           scale: 0.12
+        })
+      })
+    });
+
+    //开始点
+    that.startIconFeature = new Feature({
+      geometry: new Point([0, 0]),
+      name: "startpiont",
+      population: 4000,
+      rainfall: 500
+    });
+    var startIconSource = new VectorSource({
+      features: [that.startIconFeature]
+    });
+    that.startIconLayer = new VectorLayer({
+      source: startIconSource,
+      style: new Style({
+        image: new Icon({
+          anchor: [0.5, 46],
+          anchorXUnits: "fraction",
+          anchorYUnits: "pixels",
+          src: "img/mapicon/start.png",
+          scale: 0.3
+        })
+      })
+    });
+
+    //行人icon
+    that.walkerIconFeature = new Feature({
+      geometry: new Point([0, 0]),
+      name: "walkerpiont",
+      population: 4000,
+      rainfall: 500
+    });
+    var walkerIconSource = new VectorSource({
+      features: [that.walkerIconFeature]
+    });
+    that.walkerIconLayer = new VectorLayer({
+      source: walkerIconSource,
+      style: new Style({
+        image: new Icon({
+          anchor: [0.5, 46],
+          anchorXUnits: "fraction",
+          anchorYUnits: "pixels",
+          src: "img/mapicon/walker.png",
+          scale: 0.3
         })
       })
     });
@@ -186,7 +242,9 @@ export default {
         onlineRaster,
         // poiRaster,
         that.walkLineLayer,
-        iconLayer
+        that.iconLayer,
+        that.startIconLayer,
+        that.walkerIconLayer
       ],
       target: "openLayers",
       view: that.view
@@ -194,8 +252,12 @@ export default {
 
     that.$bus.$on("panTo", function(coordinate) {
       that.panToPoints(coordinate);
+      that.iconLayer.setVisible(true);
+      that.iconFeature.setGeometry(new Point(that.computedCenter));
     });
-
+    that.iconLayer.setVisible(false);
+    that.startIconLayer.setVisible(false);
+    that.walkerIconLayer.setVisible(false);
     // that.drawWalkerLine();
   },
   methods: {
@@ -209,7 +271,6 @@ export default {
       // console.log("this.center :>> ", this.isCoordtransform, newCoor);
       this.computedCenter = newCoor;
       this.setUserPostionCenter(this.computedCenter);
-      this.iconFeature.setGeometry(new Point(this.computedCenter));
     },
 
     //设置用户位置到中心
@@ -232,13 +293,11 @@ export default {
 
     //划线
     drawFeatureToLayer(layer, features) {
-      // let that = this;
       let reSource = new VectorSource({
         features: [features]
       });
       layer.setSource(reSource);
       layer.getSource().changed();
-      // console.log("that.walkLineLayer :>> ", layer.getSource().getFeatures());
     },
 
     //获得线feature
@@ -257,11 +316,16 @@ export default {
       that.saveFeature = new Feature({
         geometry: gpsLineGeometry
       });
+      // let data = 0.0001;
 
       that.interval = setInterval(async () => {
         if (that.getMapCurrentStatus == "pause") {
           try {
             let position = await window.$GPS.getPosition();
+
+            // position.longitude += data;
+            // position.latitude += data;
+            // data += 0.0001;
 
             if (position.latitude && position.longitude && gpsCenter != []) {
               gpsCenter = [position.longitude, position.latitude];
@@ -275,28 +339,17 @@ export default {
           } catch (error) {
             that.drawOnError(error);
           }
-          // navigator.geolocation.getCurrentPosition(function(position) {
-          // if (position.latitude && position.longitude && gpsCenter != []) {
-          //   gpsCenter = [position.longitude, position.latitude];
-          //   that.gpsCenter = gpsCenter;
-          //   that.computedCenter = coordtransform.wgs84togcj02(
-          //     position.longitude,
-          //     position.latitude
-          //   );
 
-          //   that.setCenterListArray(gpsCenter);
-          // }
-          // }, that.drawOnError);
-
-          that.setUserPostionCenter(computedCenter, 18);
+          that.setUserPostionCenter(that.computedCenter, 18);
 
           gpsLineGeometry.appendCoordinate(gpsCenter);
-          computedLineGeometry.appendCoordinate(computedCenter);
+          computedLineGeometry.appendCoordinate(that.computedCenter);
 
           that.saveFeature.setGeometry(gpsLineGeometry);
           that.walkLineFeature.setGeometry(computedLineGeometry);
 
           that.drawFeatureToLayer(that.walkLineLayer, that.walkLineFeature);
+          that.walkerIconFeature.setGeometry(new Point(that.computedCenter));
           // }
         }
       }, that.getMapSettings.timeInterval);
@@ -362,32 +415,6 @@ export default {
         });
         that.drawOnError(error);
       }
-
-      // navigator.geolocation.getCurrentPosition(
-      //   function(position) {
-      //     nowPostion = [position.coords.longitude, position.coords.latitude];
-      //     // console.log("nowPostion :>> ", nowPostion);
-      //     if (
-      //       nowPostion == [] ||
-      //       !_.isNumber(nowPostion[0]) ||
-      //       !_.isNumber(nowPostion[1])
-      //     ) {
-      //       Toast.fail({
-      //         message: "校准失败,请手动校准"
-      //       });
-      //       // this.setCenterToNowPostion();
-      //     } else {
-      //       that.gpsCenter = nowPostion;
-      //       that.panToPoints(that.gpsCenter);
-      //     }
-      //   },
-      //   function(err) {
-      //     Toast.fail({
-      //       message: "校准失败,请手动校准"
-      //     });
-      //     that.drawOnError(err);
-      //   }
-      // );
     },
 
     //添加路径点列表

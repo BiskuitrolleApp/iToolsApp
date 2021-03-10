@@ -10,43 +10,43 @@
           "/*": [
             {
               "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
-              "count": 14
+              "count": 9
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
-              "count": 14
+              "count": 9
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.CAMERA\" />",
-              "count": 13
+              "count": 8
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-              "count": 14
+              "count": 9
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
-              "count": 13
+              "count": 8
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
-              "count": 14
+              "count": 9
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
-              "count": 14
+              "count": 9
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
-              "count": 13
+              "count": 8
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_LOCATION_EXTRA_COMMANDS\" />",
-              "count": 13
+              "count": 8
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.REQUEST_INSTALL_PACKAGES\" />",
-              "count": 13
+              "count": 8
             },
             {
               "xml": "<uses-feature android:name=\"android.hardware.location.gps\" android:required=\"true\" />",

@@ -76,7 +76,7 @@ class Gps {
 
   getPosition(
     options = {
-      maximumAge: 3600,
+      // maximumAge: 3600,
       //timeout: 5000,
       enableHighAccuracy: true,
       coorType: "GCJ02"

@@ -49,6 +49,12 @@
         <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
         <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     </config-file>
+    <icon density="ldpi" src="res/icon/android/icon-36-ldpi.png" />
+    <icon density="mdpi" src="res/icon/android/icon-48-mdpi.png" />
+    <icon density="hdpi" src="res/icon/android/icon-72-hdpi.png" />
+    <icon density="xhdpi" src="res/icon/android/icon-96-xhdpi.png" />
+    <icon density="xxhdpi" src="res/icon/android/icon-144-xxhdpi.png" />
+    <icon density="xxxhdpi" src="res/icon/android/icon-192-xxxhdpi.png" />
     <preference name="loglevel" value="DEBUG" />
     <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
