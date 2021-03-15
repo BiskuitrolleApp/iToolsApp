@@ -6,5 +6,6 @@
 
 需要环境条件：
 node 12.7.0
-cordova 6.5.0
+cordova 9.0.0
 
+npm 6.14.4
