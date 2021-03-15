@@ -214,6 +214,7 @@ export default {
       margin: 30px;
       font-size: 40px;
       color: #fff;
+      font-weight: bold;
       font-family: "HanYiZhongYuanJian-1";
     }
     .searchBox {
