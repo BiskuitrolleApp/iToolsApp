@@ -8,6 +8,7 @@ import Util from "@/assets/js/Util";
 import { _loadLocalConfigAsync } from "@/assets/js/initLocalDirectory";
 
 import GPS from "@/libs/GPS";
+import "./common/form/font.scss";
 
 import {
   Button,
@@ -23,10 +24,12 @@ import {
   Icon,
   Popover,
   Switch,
-  ShareSheet
+  ShareSheet,
+  Search
 } from "vant";
 
 Vue.use(Tabbar);
+Vue.use(Search);
 Vue.use(TabbarItem);
 Vue.use(Cell);
 Vue.use(CellGroup);
