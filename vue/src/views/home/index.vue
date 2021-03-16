@@ -17,6 +17,13 @@
         placeholder="请输入搜索关键词"
       />
     </div>
+    <div class="menu">
+      <div class="menuBtn" id="menuBtn">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
     <div class="pageList">
       <div v-for="(lItem, lIndex) in viewList" :key="lIndex">
         <div>
@@ -51,18 +58,28 @@ export default {
       active: 0,
       views,
       keyword: "",
-      baseColor: color.baseColor
+      baseColor: color.baseColor,
+      isOpen:false
     };
   },
   computed: {
     viewList() {
-      let that = this;
+      let data = this.filterTitle(this.keyword, views);
+      return data;
+    }
+  },
+  mounted() {
+    this.initCordovaPlugin();
+  },
+  methods: {
+    //过滤主页方法
+    filterTitle(keyword, views) {
       let data = [];
-      if (that.keyword == "") {
-        data = that.views;
+      if (_.isNil(keyword) || keyword == "") {
+        data = views;
       } else {
-        that.views.forEach(view => {
-          if (!_.isNil(view.title) && view.title.indexOf(that.keyword) != -1) {
+        views.forEach(view => {
+          if (!_.isNil(view.title) && view.title.indexOf(keyword) != -1) {
             data.push(view);
           } else if (!_.isNil(view.title) && !_.isNil(view.list)) {
             let tempV = {
@@ -71,8 +88,8 @@ export default {
             };
             view.list.forEach(item => {
               if (
-                item.title.indexOf(that.keyword) != -1 ||
-                item.subTitle.indexOf(that.keyword) != -1
+                item.title.indexOf(keyword) != -1 ||
+                item.subTitle.indexOf(keyword) != -1
               ) {
                 tempV.list.push(item);
               }
@@ -84,12 +101,7 @@ export default {
         });
       }
       return data;
-    }
-  },
-  mounted() {
-    this.initCordovaPlugin();
-  },
-  methods: {
+    },
     bootCordova(callback) {
       return new Promise((resolve, reject) => {
         if (_.isNil(window.cordova)) {
@@ -187,9 +199,10 @@ export default {
 };
 </script>
 <style lang="scss">
+@import "../../common/css/menuBtn.scss";
 .homepage {
   width: 100vw;
-  height: calc(100vh + 120px);
+  height: 100%;
   background: #f7f8fa;
   // background: #ccc;
   .home_lable {
@@ -229,6 +242,15 @@ export default {
   }
   .pageList {
     margin-top: 30px;
+    padding-bottom: 150px;
+  }
+  .menu {
+    position: fixed;
+    z-index: 999;
+    width: 30px;
+    height: 30px;
+    top: 20px;
+    right: 20px;
   }
 }
 </style>
