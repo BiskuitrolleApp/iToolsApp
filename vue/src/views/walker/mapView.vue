@@ -262,6 +262,19 @@ export default {
   },
   methods: {
     ...mapMutations("map", ["setMapSettingsItem"]),
+    initMap() {
+      this.gpsCenter = [113.324159319, 23.1061471625]; //gps获得的中心点
+      this.computedCenter = [113.324159319, 23.1061471625]; //计算后的中心店
+      this.walkLineLayer.getSource(this.walkLineFeature);
+      this.centerListArray = [];
+      this.startPoint = [0, 0];
+      this.walkLineFeature = null;
+
+      this.saveFeature = null;
+      this.gpsLineGeometry = null;
+      this.computedLineGeometry = null;
+      this.setCenterToNowPostion();
+    },
     //设置用户位置到中心+标记用户位置
     panToPoints(coordinate) {
       let newCoor = coordinate;
@@ -382,6 +395,7 @@ export default {
       };
       // console.log("saveWalkerLineFeature :>> ", dataName, _walkerLineParams);
       api.walker.save(fileName, _walkerLineParams);
+      this.initMap();
     },
 
     //设置当前位置

@@ -17,10 +17,13 @@ function findKeyInFiles(projectIdFiles, fileName) {
 }
 
 export default {
-  listEstate: async fileName => {
+  getWalker: async fileName => {
     return await fetchJson.getJson(
       `http://localhost:${fileServer.port}/${dataPath}${fileName}.json`
     );
+  },
+  getFileListByPath: async () => {
+    return await handleLocalFile.getFilePaths(dataPath);
   },
   saveLine: async (fileName, data) => {
     let oldUpdate = [];

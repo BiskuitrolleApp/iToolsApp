@@ -25,9 +25,13 @@ import {
   Popover,
   Switch,
   ShareSheet,
-  Search
+  Search,
+  ActionSheet,
+  DatetimePicker
 } from "vant";
 
+Vue.use(DatetimePicker);
+Vue.use(ActionSheet);
 Vue.use(Tabbar);
 Vue.use(Search);
 Vue.use(TabbarItem);

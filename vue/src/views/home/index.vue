@@ -17,13 +17,18 @@
         placeholder="请输入搜索关键词"
       />
     </div>
-    <div class="menu">
-      <div class="menuBtn" id="menuBtn">
+    <!-- <div class="menu">
+      <div
+        class="menuBtn"
+        id="menuBtn"
+        :class="isMenuOpen ? 'is-active' : ''"
+        @click="menuClick"
+      >
         <span class="line"></span>
         <span class="line"></span>
         <span class="line"></span>
       </div>
-    </div>
+    </div> -->
     <div class="pageList">
       <div v-for="(lItem, lIndex) in viewList" :key="lIndex">
         <div>
@@ -59,7 +64,7 @@ export default {
       views,
       keyword: "",
       baseColor: color.baseColor,
-      isOpen:false
+      isMenuOpen: false
     };
   },
   computed: {
@@ -72,6 +77,9 @@ export default {
     this.initCordovaPlugin();
   },
   methods: {
+    menuClick() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
     //过滤主页方法
     filterTitle(keyword, views) {
       let data = [];

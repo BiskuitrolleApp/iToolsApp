@@ -220,7 +220,9 @@ class HandleLocalFileClass {
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
+            console.log("dirEntry :>> ", dirEntry);
             dirEntry.createReader().readEntries(function(entry_array) {
+              console.log("entry_array :>> ", entry_array);
               let folders = [];
               for (let i = 0; i < entry_array.length; i++) {
                 const element = entry_array[i];
