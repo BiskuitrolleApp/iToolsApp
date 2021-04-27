@@ -8,7 +8,7 @@
     /> -->
     <div></div>
     <div class="topBgc" :style="{ background: baseColor }">
-      <p class="title">主页</p>
+      <p class="title appTitle">主页</p>
       <van-search
         class="searchBox"
         v-model="keyword"
@@ -233,10 +233,7 @@ export default {
     .title {
       height: 60px;
       margin: 30px;
-      font-size: 40px;
       color: #fff;
-      font-weight: bold;
-      font-family: "HanYiZhongYuanJian-1";
     }
     .searchBox {
       height: 50px;

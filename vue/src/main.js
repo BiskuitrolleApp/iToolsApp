@@ -8,7 +8,7 @@ import Util from "@/assets/js/Util";
 import { _loadLocalConfigAsync } from "@/assets/js/initLocalDirectory";
 
 import GPS from "@/libs/GPS";
-import "./common/form/font.scss";
+import "./global.scss";
 
 import {
   Button,
