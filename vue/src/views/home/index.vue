@@ -1,12 +1,15 @@
 <template>
   <div class="homepage">
-    <!-- <van-nav-bar
+    <van-nav-bar
       title="主页"
-      :fixed="true"
-      :placeholder="true"
-      class="homeNavHeader"
-    /> -->
-    <div></div>
+      fixed
+      z-index="3"
+      v-show="showNavBarStyle.isShowBar"
+    >
+      <template #right>
+        <van-icon name="search" size="18" @click="toTop" />
+      </template>
+    </van-nav-bar>
     <div class="topBgc" :style="{ background: baseColor }">
       <p class="title appTitle">主页</p>
       <van-search
@@ -17,18 +20,6 @@
         placeholder="请输入搜索关键词"
       />
     </div>
-    <!-- <div class="menu">
-      <div
-        class="menuBtn"
-        id="menuBtn"
-        :class="isMenuOpen ? 'is-active' : ''"
-        @click="menuClick"
-      >
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-      </div>
-    </div> -->
     <div class="pageList">
       <div v-for="(lItem, lIndex) in viewList" :key="lIndex">
         <div>
@@ -53,6 +44,7 @@ import { views } from "@/config/homePageList.js";
 
 import { fileServer, color } from "@/config/mapConfig.js";
 import _ from "lodash";
+import { pageToTopFuntion } from "@/common/js/common.js";
 
 export default {
   components: {
@@ -64,7 +56,12 @@ export default {
       views,
       keyword: "",
       baseColor: color.baseColor,
-      isMenuOpen: false
+      isMenuOpen: false,
+
+      showNavBarStyle: {
+        isShowBar: false,
+        scrollHight: 200
+      }
     };
   },
   computed: {
@@ -75,8 +72,29 @@ export default {
   },
   mounted() {
     this.initCordovaPlugin();
+    window.addEventListener("scroll", this.showIcon);
   },
   methods: {
+    //点击回到顶部方法
+    toTop() {
+      pageToTopFuntion();
+    },
+    //滚动高度触发
+    showIcon() {
+      let { showNavBarStyle } = this;
+      if (
+        document.documentElement.scrollTop &&
+        document.documentElement.scrollTop > showNavBarStyle.scrollHight
+      ) {
+        //页面高度大于200执行操作;
+        showNavBarStyle.isShowBar = true;
+      } else {
+        //页面高度小于200执行操作;
+        showNavBarStyle.isShowBar = false;
+      }
+      this.showNavBarStyle = showNavBarStyle;
+      // console.log("this.showNavBarStyle :>> ", this.showNavBarStyle);
+    },
     menuClick() {
       this.isMenuOpen = !this.isMenuOpen;
     },

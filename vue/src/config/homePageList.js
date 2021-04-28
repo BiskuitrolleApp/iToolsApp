@@ -41,6 +41,30 @@ const views = [
         disabled: false
       }
     ]
+  },
+  {
+    title: "地图",
+    list: [
+      {
+        title: "步行者",
+        subTitle: "步行打点地图",
+        page: "/walker",
+        bgi: "img/bg/bg4.png",
+        disabled: false
+      }
+    ]
+  },
+  {
+    title: "地图",
+    list: [
+      {
+        title: "步行者",
+        subTitle: "步行打点地图",
+        page: "/walker",
+        bgi: "img/bg/bg4.png",
+        disabled: false
+      }
+    ]
   }
 ];
 
