@@ -1,30 +1,20 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import homeLayer from '@/layout/homepage.vue'
+import defaultLayer from '@/layout/default.vue'
 
 Vue.use(VueRouter);
 
-const routes = [
-  {
+const routes = [{
     path: "/",
     name: "home",
-    component: () => import("@/layout/default.vue"),
-    children: [
-      {
-        path: "",
-        name: "homepage",
-        component: () => import("../views/home/index.vue")
-      }
-    ]
+    component: homeLayer,
+    children: [{
+      path: "",
+      name: "homepage",
+      component: () => import("../views/home/index.vue")
+    }]
   },
-  // {
-  //   path: "/about",
-  //   name: "About",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/About.vue"),
-  // },
   {
     path: "/video",
     name: "video",
@@ -36,9 +26,21 @@ const routes = [
     component: () => import("@/views/walker/index.vue")
   },
   {
-    path: "/iframe",
-    name: "iframe",
-    component: () => import("@/views/iframe/index.vue")
+    /**
+     * 图片预设页面
+     */
+    path: "/photo",
+    component: defaultLayer,
+    name: "photo",
+    children: [{
+      meta: {
+        title: "编辑图片",
+        back: "/"
+      },
+      path: "",
+      name: "photoPreset",
+      component: () => import("@/views/photoPreset/index.vue")
+    }]
   }
 ];
 
