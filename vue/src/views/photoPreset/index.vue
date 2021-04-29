@@ -73,7 +73,7 @@ export default {
         top: 50,
         left: 100,
         width: 100,
-        height: 70,
+        height: 60,
         fill: 'red'
       })
       canvas.add(rect)
