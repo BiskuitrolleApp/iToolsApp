@@ -2,5 +2,6 @@
   "eslintIntegration": true,
   "singleQuote": true,
   "endOfLine": "auto",
-  "semi": false
+  "semi": false,
+  "TrailingCooma": "all"
 }
