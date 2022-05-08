@@ -9,29 +9,29 @@ class HandleLocalFileClass {
   createAndWriteFile(path, fileName, dataObj) {
     return new Promise((resolve, reject) => {
       try {
-        console.log("fileName :>> ", fileName);
-        console.log("createAndWriteFile dataObj :>> ", dataObj);
-        let root = cordova.file.externalRootDirectory;
+        console.log('fileName :>> ', fileName)
+        console.log('createAndWriteFile dataObj :>> ', dataObj)
+        let root = cordova.file.externalRootDirectory
         // let fullPath = root + 'fdyt/projects/'
-        let fullPath = root + path;
-        console.log("fullPath :>> ", fullPath);
+        let fullPath = root + path
+        console.log('fullPath :>> ', fullPath)
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
             console.log(
-              "file system open: " + JSON.stringify(dirEntry),
+              'file system open: ' + JSON.stringify(dirEntry),
               fileName,
               dataObj
-            );
-            resolve(createFile(dirEntry, fileName, dataObj, "JSON"));
+            )
+            resolve(createFile(dirEntry, fileName, dataObj, 'JSON'))
           },
           onErrorLoadFs
-        );
+        )
       } catch (error) {
-        reject(error);
-        console.log("error :>> ", error);
+        reject(error)
+        console.log('error :>> ', error)
       }
-    });
+    })
   }
 
   //   /**
@@ -69,8 +69,8 @@ class HandleLocalFileClass {
   getAndReadJSONFile(path, fileName) {
     return new Promise((resolve, reject) => {
       try {
-        let root = cordova.file.externalRootDirectory;
-        let fullPath = root + path;
+        let root = cordova.file.externalRootDirectory
+        let fullPath = root + path
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
@@ -79,17 +79,17 @@ class HandleLocalFileClass {
               { create: false, exclusive: false },
               function(fileEntry) {
                 // console.log('file system open: ' + fileEntry.name)
-                resolve(readJSONFile(fileEntry));
+                resolve(readJSONFile(fileEntry))
               }
-            );
+            )
           },
           onErrorLoadFs
-        );
+        )
       } catch (error) {
-        reject(error);
-        console.log("error :>> ", error);
+        reject(error)
+        console.log('error :>> ', error)
       }
-    });
+    })
   }
 
   /**
@@ -100,8 +100,8 @@ class HandleLocalFileClass {
   getAndReadFile(path, fileName) {
     return new Promise((resolve, reject) => {
       try {
-        let root = cordova.file.externalRootDirectory;
-        let fullPath = root + path;
+        let root = cordova.file.externalRootDirectory
+        let fullPath = root + path
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
@@ -110,17 +110,17 @@ class HandleLocalFileClass {
               { create: false, exclusive: false },
               function(fileEntry) {
                 // console.log('file system open: ' + fileEntry.name)
-                resolve(readFile(fileEntry));
+                resolve(readFile(fileEntry))
               }
-            );
+            )
           },
           onErrorLoadFs
-        );
+        )
       } catch (error) {
-        reject(error);
-        console.log("error :>> ", error);
+        reject(error)
+        console.log('error :>> ', error)
       }
-    });
+    })
   }
 
   /**
@@ -131,15 +131,15 @@ class HandleLocalFileClass {
     return new Promise((resolve, reject) => {
       try {
         // console.log('cordova.file :>> ', cordova.file)
-        let root = cordova.file.externalRootDirectory;
+        let root = cordova.file.externalRootDirectory
         window.resolveLocalFileSystemURL(root, function(dirEntry) {
-          createDir(dirEntry, path.split("/"));
-        });
+          createDir(dirEntry, path.split('/'))
+        })
       } catch (error) {
-        reject(error);
-        console.log("error :>> ", error);
+        reject(error)
+        console.log('error :>> ', error)
       }
-    });
+    })
   }
 
   /**
@@ -150,8 +150,8 @@ class HandleLocalFileClass {
   handleDeleteFile(path, fileName) {
     return new Promise((resolve, reject) => {
       try {
-        let root = cordova.file.externalRootDirectory;
-        let fullPath = root + path;
+        let root = cordova.file.externalRootDirectory
+        let fullPath = root + path
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
@@ -160,17 +160,17 @@ class HandleLocalFileClass {
               { create: false, exclusive: false },
               function(fileEntry) {
                 // console.log('file system delete: ' + fileEntry.name)
-                resolve(deleteFile(fileEntry));
+                resolve(deleteFile(fileEntry))
               }
-            );
+            )
           },
           onErrorLoadFs
-        );
+        )
       } catch (error) {
-        reject(error);
-        console.log("error :>> ", error);
+        reject(error)
+        console.log('error :>> ', error)
       }
-    });
+    })
   }
 
   //   handleMoveFile(oldPath, newPath, fileName) {
@@ -214,37 +214,37 @@ class HandleLocalFileClass {
   getFolderPaths(path) {
     return new Promise((resolve, reject) => {
       try {
-        let root = cordova.file.externalRootDirectory;
-        let fullPath = root + path;
+        let root = cordova.file.externalRootDirectory
+        let fullPath = root + path
         // let fullPath = "file:///storage/emulated/0";
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
-            console.log("dirEntry :>> ", dirEntry);
+            console.log('dirEntry :>> ', dirEntry)
             dirEntry.createReader().readEntries(function(entry_array) {
-              console.log("entry_array :>> ", entry_array);
-              let folders = [];
+              console.log('entry_array :>> ', entry_array)
+              let folders = []
               for (let i = 0; i < entry_array.length; i++) {
-                const element = entry_array[i];
+                const element = entry_array[i]
                 if (!element.isFile) {
                   let pushData = {
                     name: element.name,
                     fullPath: element.fullPath.slice(1), // 返回没有前面的'/'
                     nativeURL: element.nativeURL
-                  };
-                  folders.push(pushData);
+                  }
+                  folders.push(pushData)
                 }
               }
-              resolve(folders);
-            });
+              resolve(folders)
+            })
           },
           onErrorLoadFs
-        );
+        )
       } catch (error) {
-        reject(error);
-        console.log("error :>> ", error);
+        reject(error)
+        console.log('error :>> ', error)
       }
-    });
+    })
   }
 
   /**
@@ -254,38 +254,38 @@ class HandleLocalFileClass {
   getFilePaths(path) {
     return new Promise((resolve, reject) => {
       try {
-        let root = cordova.file.externalRootDirectory;
-        let fullPath = root + path;
-        let files = [];
+        let root = cordova.file.externalRootDirectory
+        let fullPath = root + path
+        let files = []
         window.resolveLocalFileSystemURL(
           fullPath,
           function(dirEntry) {
             dirEntry.createReader().readEntries(function(entry_array) {
               for (let i = 0; i < entry_array.length; i++) {
-                const element = entry_array[i];
+                const element = entry_array[i]
                 if (element.isFile) {
                   let pushData = {
                     name: element.name,
                     fullPath: element.fullPath.slice(1), // 返回没有前面的'/'
                     nativeURL: element.nativeURL
-                  };
-                  files.push(pushData);
+                  }
+                  files.push(pushData)
                 }
               }
-              resolve(files);
-            });
+              resolve(files)
+            })
           },
           onErrorLoadFs
-        );
+        )
       } catch (error) {
-        reject(error);
-        console.log("getFilePaths error :>> ", error);
+        reject(error)
+        console.log('getFilePaths error :>> ', error)
       }
-    });
+    })
   }
 }
 
-const handleLocalFile = new HandleLocalFileClass();
+const handleLocalFile = new HandleLocalFileClass()
 
 /**
  * 递归创建文件夹
@@ -293,24 +293,24 @@ const handleLocalFile = new HandleLocalFileClass();
  * @param {*} folders 文件夹数组
  */
 function createDir(rootDirEntry, folders) {
-  if (folders[0] === "." || folders[0] === "") {
-    folders = folders.slice(1);
+  if (folders[0] === '.' || folders[0] === '') {
+    folders = folders.slice(1)
   }
   if (folders.length === 0) {
-    return;
+    return
   }
-  console.log("createDir :>> ", rootDirEntry, folders[0] + "/", folders);
+  console.log('createDir :>> ', rootDirEntry, folders[0] + '/', folders)
   rootDirEntry.getDirectory(
-    folders[0] + "/",
+    folders[0] + '/',
     { create: true, exclusive: false },
     function(dirEntry) {
       // console.info(dirEntry.fullPath)
       if (folders.length) {
-        createDir(dirEntry, folders.slice(1));
+        createDir(dirEntry, folders.slice(1))
       }
     },
     onErrorGetDir
-  );
+  )
 }
 
 //将内容数据写入到文件中
@@ -323,26 +323,26 @@ function writeFile(fileEntry, dataObj) {
           // console.log('Successful file write...')
           resolve({
             success: true
-          });
+          })
           // readFile(fileEntry)
-        };
+        }
         fileWriter.onerror = function(e) {
-          reject(e);
+          reject(e)
           // console.log('Failed file write: ' + e.toString())
-        };
+        }
         // If data object is not passed in,
         // create a new Blob instead.
         if (!dataObj) {
           dataObj = new Blob([JSON.stringify(dataObj)], {
-            type: "application/json"
-          });
+            type: 'application/json'
+          })
         }
-        fileWriter.write(dataObj);
-      });
+        fileWriter.write(dataObj)
+      })
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
+  })
 }
 
 //将BLOB内容数据写入到文件中
@@ -355,24 +355,24 @@ function writeBlobFile(fileEntry, dataObj) {
           // console.log('Successful file write...')
           resolve({
             success: true
-          });
+          })
           // readFile(fileEntry)
-        };
+        }
         fileWriter.onerror = function(e) {
-          reject(e);
+          reject(e)
           // console.log('Failed file write: ' + e.toString())
-        };
+        }
         // If data object is not passed in,
         // create a new Blob instead.
         // if (!dataObj) {
         //   dataObj = new Blob([JSON.stringify(dataObj)], { type: 'application/json' })
         // }
-        fileWriter.write(dataObj);
-      });
+        fileWriter.write(dataObj)
+      })
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
+  })
 }
 
 /**
@@ -389,19 +389,19 @@ function createFile(dirEntry, fileName, dataObj, type) {
         fileName,
         { create: true, exclusive: false },
         function(fileEntry) {
-          console.log("createFile fileEntry:>> ", fileEntry);
-          if (type === "JSON") {
-            resolve(writeFile(fileEntry, dataObj));
-          } else if (type === "BLOB") {
-            resolve(writeBlobFile(fileEntry, dataObj));
+          console.log('createFile fileEntry:>> ', fileEntry)
+          if (type === 'JSON') {
+            resolve(writeFile(fileEntry, dataObj))
+          } else if (type === 'BLOB') {
+            resolve(writeBlobFile(fileEntry, dataObj))
           }
         },
         onErrorCreateFile
-      );
+      )
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
+  })
 }
 
 /**
@@ -412,32 +412,32 @@ function readJSONFile(fileEntry) {
   return new Promise((resolve, reject) => {
     try {
       fileEntry.file(function(file) {
-        let reader = new FileReader();
+        let reader = new FileReader()
         reader.onloadend = function() {
           // console.log('Successful file read: ' + this.result)
           // console.log('fileEntry.fullPath :>> ', fileEntry.fullPath)
-          let reData = this.result;
+          let reData = this.result
           try {
-            reData = JSON.parse(reData);
+            reData = JSON.parse(reData)
           } catch (error) {
-            console.log("error :>> ", error);
-            reData = {};
+            console.log('error :>> ', error)
+            reData = {}
           }
           resolve({
             success: true,
             data: reData
-          });
+          })
           // displayFileData(fileEntry.fullPath + ': ' + this.result)
-        };
+        }
         reader.onerror = function(e) {
-          reject(e);
-        };
-        reader.readAsText(file);
-      }, onErrorReadFile);
+          reject(e)
+        }
+        reader.readAsText(file)
+      }, onErrorReadFile)
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
+  })
 }
 
 /**
@@ -448,26 +448,26 @@ function readFile(fileEntry) {
   return new Promise((resolve, reject) => {
     try {
       fileEntry.file(function(file) {
-        let reader = new FileReader();
+        let reader = new FileReader()
         reader.onloadend = function() {
           // console.log('Successful file read: ' + this.result)
           // console.log('fileEntry.fullPath :>> ', fileEntry.fullPath)
-          let reData = this.result;
+          let reData = this.result
           resolve({
             success: true,
             data: reData
-          });
+          })
           // displayFileData(fileEntry.fullPath + ': ' + this.result)
-        };
+        }
         reader.onerror = function(e) {
-          reject(e);
-        };
-        reader.readAsText(file);
-      }, onErrorReadFile);
+          reject(e)
+        }
+        reader.readAsText(file)
+      }, onErrorReadFile)
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
+  })
 }
 
 /**
@@ -481,49 +481,49 @@ function deleteFile(fileEntry) {
         function() {
           resolve({
             success: true
-          });
+          })
         },
         function(err) {
-          console.error(err);
-          reject(err);
+          console.error(err)
+          reject(err)
         },
         function() {
-          console.log("file not exist");
-          reject("file not exist");
+          console.log('file not exist')
+          reject('file not exist')
         }
-      );
+      )
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
+  })
 }
 
 //FileSystem加载失败回调
 function onErrorLoadFs(error) {
-  console.log("error :>> ", error);
-  console.log("文件系统加载失败！");
-  throw "文件系统加载失败！";
+  console.log('error :>> ', error)
+  console.log('文件系统加载失败！')
+  throw '文件系统加载失败！'
 }
 
 //文件夹创建失败回调
 function onErrorGetDir(error) {
-  console.log("error :>> ", error);
-  console.log("文件夹创建失败！");
-  throw "文件夹创建失败！";
+  console.log('error :>> ', error)
+  console.log('文件夹创建失败！')
+  throw '文件夹创建失败！'
 }
 
 //文件创建失败回调
 function onErrorCreateFile(error) {
-  console.log("error :>> ", error);
-  console.log("文件创建失败！");
-  throw "文件创建失败！";
+  console.log('error :>> ', error)
+  console.log('文件创建失败！')
+  throw '文件创建失败！'
 }
 
 //读取文件失败响应
 function onErrorReadFile(error) {
-  console.log("error :>> ", error);
-  console.log("文件读取失败!");
-  throw "文件读取失败!";
+  console.log('error :>> ', error)
+  console.log('文件读取失败!')
+  throw '文件读取失败!'
 }
 
-export default handleLocalFile;
+export default handleLocalFile

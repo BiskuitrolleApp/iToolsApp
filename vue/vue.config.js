@@ -1,4 +1,3 @@
-
 // const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 // const path = require('path')
@@ -21,6 +20,18 @@ module.exports = {
   /* webpack-dev-server 相关配置 */
 
   configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.ts$|\.js$|\.vue$/,
+          use: [
+            {
+              loader: './serverLoader.js'
+            }
+          ]
+        }
+      ]
+    },
     //entry: ["babel-polyfill", "./src/main.js"]
     amd: {
       toUrlUndefined: true

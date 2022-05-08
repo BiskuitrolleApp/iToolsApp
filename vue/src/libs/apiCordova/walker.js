@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: kevinzheng
+ * @Date: 2021-11-15 10:12:10
+ * @LastEditors: kevinzheng
+ * @LastEditTime: 2021-12-13 22:56:23
+ */
 import { handleLocalFile, fetchJson } from '../fetch'
 import { fileServer } from '@/config/mapConfig.js'
 
@@ -36,7 +44,7 @@ export default {
       }
       console.log('saveLine Files end:>> ', oldUpdate, Files)
 
-      console.log('createAndWriteFile start:>> ')
+      console.log('createAndWriteFile start :>> ')
       oldUpdate.push(data)
       let writeFile = await handleLocalFile.createAndWriteFile(
         dataPath,
