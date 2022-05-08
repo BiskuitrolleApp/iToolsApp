@@ -1,6 +1,5 @@
 // 读取json文件
-// const axios = require("axios");
-import axios from "axios";
+import axios from 'axios'
 
 class FetchJsonClass {
   /**
@@ -11,18 +10,18 @@ class FetchJsonClass {
     return axios
       .get(filepath)
       .then(rsp => {
-        if (rsp.status === 200) {
-          return rsp.data;
+        if (rsp.status === '1') {
+          return rsp.data
         } else {
-          return [];
+          throw new Error('')
         }
       })
       .catch(err => {
-        return [];
-      });
+        throw new Error(err)
+      })
   }
 }
 
-const fetchJson = new FetchJsonClass();
+const fetchJson = new FetchJsonClass()
 
-export default fetchJson;
+export default fetchJson
