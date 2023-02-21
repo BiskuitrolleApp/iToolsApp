@@ -1,6 +1,6 @@
 /*
- * @Descripttion: 
- * @version: 
+ * @Descripttion:
+ * @version:
  * @Author: kevinzheng
  * @Date: 2021-11-15 10:12:10
  * @LastEditors: kevinzheng
@@ -16,14 +16,11 @@ import Util from '@/assets/js/Util'
 import { _loadLocalConfigAsync } from '@/assets/js/initLocalDirectory'
 
 import GPS from '@/libs/GPS'
-import './global.scss'
-import '../coconutMobile/index'
 
+import '../@CoconutMobileUI/vue2/package/theme/index.scss'
+import cocoInstall from '../@CoconutMobileUI/vue2/index'
 
-import "../@CoconutMobileUI/vue2/package/theme/index.scss";
-import cocoInstall from "../@CoconutMobileUI/vue2/index";
-
-Vue.use(cocoInstall);
+Vue.use(cocoInstall)
 
 import {
   Button,
