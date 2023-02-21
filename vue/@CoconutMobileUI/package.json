@@ -1,0 +1,29 @@
+{
+  "name": "coconut-mobile",
+  "version": "1.0.0",
+  "description": "mobile UI for vue2 and vue3",
+  "main": "vue2/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KevinJieZheng/coconut-mobile.git"
+  },
+  "keywords": [
+    "Vue mobile",
+    "coconut-mobile",
+    "Vue.js",
+    "Font Awesome"
+  ],
+  "author": "KevinJieZheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KevinJieZheng/coconut-mobile/issues"
+  },
+  "homepage": "https://github.com/KevinJieZheng/coconut-mobile#readme",
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.0.10",
+    "vue-awesome": "^4.5.0"
+  }
+}

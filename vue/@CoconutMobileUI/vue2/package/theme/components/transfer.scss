@@ -1,0 +1,378 @@
+@import "../mixins/mixins";
+
+$animation-duration--slow: 1s; // 时间间隔慢
+$animation-duration: 0.6s; // 时间间隔
+$animation-duration--fast: 0.2s; // 时间间隔
+$ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1); // out 动画曲线
+$ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.34); // in 动画曲线
+
+@include b(transfer) {
+    -webkit-animation-duration: $animation-duration;
+    animation-duration: $animation-duration;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    @include when(slow) {
+        -webkit-animation-duration: $animation-duration--slow;
+        animation-duration: $animation-duration--slow;
+    }
+    @include when(fast) {
+        -webkit-animation-duration: $animation-duration--fast;
+        animation-duration: $animation-duration--fast;
+    }
+}
+// 淡入淡出 fade
+@include b(fade) {
+    @include m(in) {
+        -webkit-animation-name: fadeIn;
+        animation-name: fadeIn;
+        animation-timing-function: $ease-in-circ;
+    }
+    @include m(out) {
+        -webkit-animation-name: fadeOut;
+        animation-name: fadeOut;
+        animation-timing-function: $ease-out-circ;
+    }
+}
+
+// 位移 move
+// 向下位移
+@include b(moveDown) {
+    @include m(in) {
+        -webkit-animation-name: moveDownIn;
+        animation-name: moveDownIn;
+        animation-timing-function: $ease-in-circ;
+    }
+    @include m(out) {
+        -webkit-animation-name: moveDownOut;
+        animation-name: moveDownOut;
+        animation-timing-function: $ease-out-circ;
+    }
+}
+// 向左位移
+@include b(moveLeft) {
+    @include m(in) {
+        -webkit-animation-name: moveLeftIn;
+        animation-name: moveLeftIn;
+        animation-timing-function: $ease-in-circ;
+    }
+    @include m(out) {
+        -webkit-animation-name: moveLeftOut;
+        animation-name: moveLeftOut;
+        animation-timing-function: $ease-out-circ;
+    }
+}
+// 向右位移
+@include b(moveRight) {
+    @include m(in) {
+        -webkit-animation-name: moveRightIn;
+        animation-name: moveRightIn;
+        animation-timing-function: $ease-in-circ;
+    }
+    @include m(out) {
+        -webkit-animation-name: moveRightOut;
+        animation-name: moveRightOut;
+        animation-timing-function: $ease-out-circ;
+    }
+    @include m(upIn) {
+        -webkit-animation-name: moveUpIn;
+        animation-name: moveUpIn;
+        animation-timing-function: $ease-in-circ;
+    }
+    @include m(upOut) {
+        -webkit-animation-name: moveUpOut;
+        animation-name: moveUpOut;
+        animation-timing-function: $ease-out-circ;
+    }
+}
+// 向上位移
+@include b(moveUp) {
+    @include m(in) {
+        -webkit-animation-name: moveUpIn;
+        animation-name: moveUpIn;
+        animation-timing-function: $ease-in-circ;
+    }
+    @include m(out) {
+        -webkit-animation-name: moveUpOut;
+        animation-name: moveUpOut;
+        animation-timing-function: $ease-out-circ;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0.4;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.4;
+    }
+}
+
+@-webkit-keyframes moveDownIn {
+    0% {
+        transform: translateY(100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+    90% {
+        transform: translateY(-4%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+}
+@keyframes moveDownIn {
+    0% {
+        transform: translateY(100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+    90% {
+        transform: translateY(-4%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes moveDownOut {
+    0% {
+        transform: translateY(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+}
+@keyframes moveDownOut {
+    0% {
+        transform: translateY(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes moveLeftIn {
+    0% {
+        transform: translateX(-100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+    90% {
+        transform: translateX(4%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+}
+@keyframes moveLeftIn {
+    0% {
+        transform: translateX(-100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+    90% {
+        transform: translateX(4%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes moveLeftOut {
+    0% {
+        transform: translateX(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+}
+@keyframes moveLeftOut {
+    0% {
+        transform: translateX(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes moveRightIn {
+    0% {
+        transform: translateX(100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+    90% {
+        transform: translateX(-4%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+}
+@keyframes moveRightIn {
+    0% {
+        transform: translateX(100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+    90% {
+        transform: translateX(-4%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes moveRightOut {
+    0% {
+        transform: translateX(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+}
+@keyframes moveRightOut {
+    0% {
+        transform: translateX(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes moveUpIn {
+    0% {
+        transform: translateY(-100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+    90% {
+        transform: translateY(4%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+}
+@keyframes moveUpIn {
+    0% {
+        transform: translateY(-100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+    90% {
+        transform: translateY(4%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes moveUpOut {
+    0% {
+        transform: translateY(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+}
+@keyframes moveUpOut {
+    0% {
+        transform: translateY(0%);
+        transform-origin: 0 0;
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100%);
+        transform-origin: 0 0;
+        opacity: 0;
+    }
+}

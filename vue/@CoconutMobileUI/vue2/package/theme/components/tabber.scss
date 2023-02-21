@@ -1,0 +1,36 @@
+@import "../mixins/mixins";
+@import "../base/theme";
+@import "../base/var";
+
+@include b(tabbar) {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    color: $--button-default-color;
+    background-color: $--button-default-background-color;
+    bottom: 0px;
+    z-index: $--tabbar-default-zindex;
+    @include b(tabbarItem) {
+        flex: 1;
+        text-align: center;
+        min-width: 27px;
+        cursor: pointer;
+        padding: 10px 5px;
+        @include e(icon) {
+            margin: 0px auto 5px;
+            font-size: $--tabbar-default-icon-font;
+            i {
+                font-size: $--tabbar-default-icon-font;
+            }
+        }
+        @include e(text) {
+            font-size: $--tabbar-default-font;
+        }
+        @include when(active) {
+            color: $--button-primary-color;
+            background-color: $--button-primary-background-color;
+        }
+    }
+}

@@ -1,0 +1,39 @@
+/**
+ * 主题颜色变量，影响整体颜色
+ */
+$white: #fff !default;
+$black: #000 !default;
+$defalut-white: #fbfbfd !default;
+$defalut-black: #1d1d1f !default;
+
+$primary: #7575ff !default;
+$success: #67c23a !default;
+$warning: #e6a23c !default;
+$danger: #f56c6c !default;
+$info: #909399 !default;
+$transparent: rgba(255, 255, 255, 0) !default;
+$gray-1: #646566 !default;
+$gray-2: #b5b6b7 !default;
+
+$font-32: 32px !default;
+$font-28: 28px !default;
+$font-26: 26px !default;
+$font-24: 24px !default;
+$font-22: 22px !default;
+$font-20: 20px !default;
+$font-18: 18px !default;
+$font-16: 16px !default;
+$font-14: 14px !default;
+$font-12: 12px !default;
+
+$font-size-small: 12px;
+$font-size-normal: 14px;
+$font-size-large: 16px;
+
+$padding-small: 10px;
+$padding-normal: 12px;
+$padding-large: 16px;
+
+$mainTitle: $black; // 默认标题颜色
+$subTitle: $gray-1; // 默认次标题颜色
+$borderColor: rgba($gray-2, 0.4); // 默认border颜色

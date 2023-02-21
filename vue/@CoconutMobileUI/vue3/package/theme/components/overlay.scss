@@ -1,0 +1,24 @@
+@import "../mixins/mixins.scss";
+@import "../base/var.scss";
+
+@include b(overlay) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: $--overlay-default-background-color;
+  &-slot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+    width: 300px;
+    transform: translate(-50%, -50%);
+    background-color: $--overlay-default-content-color;
+    border-radius: $--overlay-border-radius;
+    border: 1px solid #ebeef5;
+    box-shadow: 0 2px 12px 0 rgba($color: #000000, $alpha: 0.4);
+  }
+}

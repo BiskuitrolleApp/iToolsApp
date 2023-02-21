@@ -1,0 +1,43 @@
+@import "../mixins/mixins";
+@import "../base/var";
+
+@include b(dialog) {
+    @include e(title) {
+        padding-top: $--dialog-title-padding-top;
+        font-weight: $--dialog-title-font-weight;
+        line-height: $--dialog-title-line-height;
+        text-align: center;
+        color: $mainTitle;
+    }
+    @include e(content) {
+        max-height: 60vh;
+        margin: 26px $padding-normal;
+        overflow-y: auto;
+        font-size: $font-size-normal;
+        line-height: $--dialog-content-line-height;
+        white-space: pre-wrap;
+        text-align: center;
+        word-wrap: break-word;
+        color: $subTitle;
+    }
+    @include e(buttonWrapper){
+        display: flex;
+        @include m(button){
+            flex: 1;
+            text-align: center;
+            height: $--dialog-button-height;
+            line-height: $--dialog-button-height;
+            border-right: 1px $--dialog-border-color solid;
+            border-top: 1px $--dialog-border-color solid;
+            @include pseudo(last-child){
+                border-right: 0px;
+            }
+        }
+        @include m(cancel){
+           color:$--dialog-button-cancel-color;
+        }
+        @include m(confirm){
+            color:$--dialog-button-confirm-color;
+        }
+    }
+}

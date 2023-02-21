@@ -1,0 +1,40 @@
+@import "../mixins/mixins.scss";
+@import "../base/theme.scss";
+@import "../base/var.scss";
+
+@include b(tabbar) {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  color: $--tabbar-default-color;
+  background-color: $--tabbar-default-background-color;
+  bottom: 0px;
+  z-index: $--tabbar-default-zindex;
+  @include b(tabbarItem) {
+    flex: 1;
+    text-align: center;
+    min-width: 27px;
+    cursor: pointer;
+    padding: 10px 5px;
+    @include e(icon) {
+      margin: 0px auto 5px;
+      font-size: $--tabbar-default-icon-font;
+      i {
+        font-size: $--tabbar-default-icon-font;
+      }
+    }
+    @include e(text) {
+      font-size: $--tabbar-default-font;
+    }
+    @include when(active) {
+      color: $--tabbar-primary-color;
+      background-color: $--tabbar-primary-background-color;
+    }
+  }
+  @include when(safetyArea) {
+    padding-bottom: constant(safe-area-inset-bottom); /*兼容 IOS<11.2*/
+    padding-bottom: env(safe-area-inset-bottom); /*兼容 IOS>11.2*/
+  }
+}

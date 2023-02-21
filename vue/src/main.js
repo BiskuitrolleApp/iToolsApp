@@ -10,6 +10,11 @@ import { _loadLocalConfigAsync } from "@/assets/js/initLocalDirectory";
 import GPS from "@/libs/GPS";
 import "./common/form/font.scss";
 
+import "../@CoconutMobileUI/vue2/package/theme/index.scss";
+import cocoInstall from "../@CoconutMobileUI/vue2/index";
+
+Vue.use(cocoInstall);
+
 import {
   Button,
   Tabbar,
