@@ -1,3 +1,7 @@
 {
-  "trailingComma": "none"
+  "eslintIntegration": true,
+  "singleQuote": true,
+  "endOfLine": "auto",
+  "semi": false,
+  "TrailingCooma": "all"
 }

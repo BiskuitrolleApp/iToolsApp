@@ -123,7 +123,7 @@ import mapView from "./mapView";
 import popupForm from "./components/popupForm";
 import { onlineDomUrl } from "@/config/mapConfig.js";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import api from "@/libs/api";
+// import api from "@/libs/api";
 
 export default {
   components: {

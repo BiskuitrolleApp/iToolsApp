@@ -1,0 +1,56 @@
+$fontSize-1: 36px;
+$fontSize-2: 32px;
+$fontSize-3: 30px;
+$fontSize-4: 18px;
+$fontSize-5: 16px;
+$fontSize-6: 14px;
+$fontSize-7: 12px;
+
+$weight-1: 800;
+$weight-2: 600;
+$weight-3: 400;
+
+.appTitle {
+  font-size: $fontSize-1;
+  font-weight: $weight-1;
+}
+
+.pageTitle {
+  font-size: $fontSize-2;
+  font-weight: $weight-2;
+}
+
+.mainTitle {
+  font-size: $fontSize-3;
+  font-weight: $weight-2;
+}
+
+@media screen and (min-width: 750px) {
+  //.normalContent_lg
+  .normalcontent {
+    font-size: $fontSize-4;
+    font-weight: $weight-3;
+  }
+}
+@media screen and (max-width: 750px) {
+  //.normalContent_xs
+  .normalcontent {
+    font-size: $fontSize-5;
+    font-weight: $weight-3;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  //subContent_lg
+  .subContent {
+    font-size: $fontSize-6;
+    font-weight: $weight-3;
+  }
+}
+@media screen and (max-width: 750px) {
+  //subContent_xs
+  .subContent {
+    font-size: $fontSize-7;
+    font-weight: $weight-3;
+  }
+}

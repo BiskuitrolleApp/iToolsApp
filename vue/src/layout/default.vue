@@ -1,18 +1,40 @@
 <template>
   <div>
+    <van-nav-bar
+      :title="navTitle"
+      left-text="返回"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <router-view></router-view>
-    <van-tabbar v-model="active" style="z-index:10">
-      <van-tabbar-item icon="wap-home">主页</van-tabbar-item>
-      <van-tabbar-item icon="friends">我的</van-tabbar-item>
-    </van-tabbar>
   </div>
 </template>
 <script>
+import _ from 'lodash'
 export default {
   data() {
     return {
-      active: 0
-    };
+      active: 0,
+      navTitle: '标题',
+      meta: {}
+    }
+  },
+  mounted() {
+    let meta = _.get(this.$route, 'meta', {})
+    if (!_.isNil(meta.title)) {
+      this.navTitle = meta.title
+    }
+    this.meta = meta
+  },
+  methods: {
+    onClickLeft() {
+      let { meta } = this
+      if (!_.isNil(meta.back)) {
+        this.$router.push(meta.back)
+      } else {
+        this.$router.push('/')
+      }
+    }
   }
-};
+}
 </script>
