@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'coo-icon',
+  name: 'CooIconOld',
   props: {
     name: String,
   },

@@ -14,8 +14,8 @@
 </template>
 <script>
 export default {
-  props: ["title", "subtitle", "bg", "disabled"]
-};
+  props: ['title', 'subtitle', 'bg', 'disabled']
+}
 </script>
 <style lang="scss" scoped>
 .card_base {

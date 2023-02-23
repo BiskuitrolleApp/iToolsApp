@@ -56,7 +56,7 @@ import { pageToTopFuntion } from '@/common/js/common.js'
 
 export default {
   components: {
-    card,
+    card
   },
   data() {
     return {
@@ -68,18 +68,18 @@ export default {
 
       showNavBarStyle: {
         isShowBar: false,
-        scrollHight: 200,
-      },
+        scrollHight: 200
+      }
     }
   },
   computed: {
     viewList() {
       let data = this.filterTitle(this.keyword, views)
       return data
-    },
+    }
   },
   mounted() {
-    this.initCordovaPlugin()
+    // this.initCordovaPlugin()
     window.addEventListener('scroll', this.showIcon)
   },
   methods: {
@@ -115,15 +115,15 @@ export default {
       if (_.isNil(keyword) || keyword == '') {
         data = views
       } else {
-        views.forEach((view) => {
+        views.forEach(view => {
           if (!_.isNil(view.title) && view.title.indexOf(keyword) != -1) {
             data.push(view)
           } else if (!_.isNil(view.title) && !_.isNil(view.list)) {
             let tempV = {
               title: view.title,
-              list: [],
+              list: []
             }
-            view.list.forEach((item) => {
+            view.list.forEach(item => {
               if (
                 item.title.indexOf(keyword) != -1 ||
                 item.subTitle.indexOf(keyword) != -1
@@ -167,72 +167,70 @@ export default {
       this.$router.push(pageInfo.page)
       // window.location.href = "http://www.baidu.com";
     },
-    async initCordovaPlugin() {
-      //Caution: This code will be move to cordova dictionary
-      let that = this
-      try {
-        window.httpd = { enable: false }
-        await that.bootCordova(async () => {
-          //申请权限
-          let permissions = cordova.plugins.permissions
-          permissions.requestPermissions(
-            [
-              permissions.INTERNET,
-              permissions.ACCESS_NETWORK_STATE,
-              permissions.CAMERA,
-              permissions.WRITE_EXTERNAL_STORAGE,
-              permissions.READ_EXTERNAL_STORAGE,
-              permissions.ACCESS_COARSE_LOCATION,
-              permissions.ACCESS_FINE_LOCATION,
-            ],
-            () => {
-              // GPS.start()
-            },
-            () => {}
-          )
+    // async initCordovaPlugin() {
+    //   //Caution: This code will be move to cordova dictionary
+    //   let that = this
+    //   try {
+    //     window.httpd = { enable: false }
+    //     await that.bootCordova(async () => {
+    //       //申请权限
+    //       let permissions = cordova.plugins.permissions
+    //       permissions.requestPermissions(
+    //         [
+    //           permissions.INTERNET,
+    //           permissions.ACCESS_NETWORK_STATE,
+    //           permissions.CAMERA,
+    //           permissions.WRITE_EXTERNAL_STORAGE,
+    //           permissions.READ_EXTERNAL_STORAGE,
+    //           permissions.ACCESS_COARSE_LOCATION,
+    //           permissions.ACCESS_FINE_LOCATION
+    //         ],
+    //         () => {
+    //           // GPS.start()
+    //         },
+    //         () => {}
+    //       )
 
-          //启动内部服务
-          let root = $Util.getUrlPath(cordova.file.externalRootDirectory)
-          console.log('root getUrlPath:>> ', root)
-          await new Promise((resolve, reject) => {
-            let httpd = cordova.plugins.CorHttpd
-            httpd.getURL((url) => {
-              if (url.length > 0) {
-                window.httpd = {
-                  enable: true,
-                  url,
-                }
-                resolve()
-              } else {
-                httpd.startServer(
-                  {
-                    www_root: `${root}`,
-                    port: fileServer.port,
-                    localhost_only: false,
-                  },
-                  (url) => {
-                    window.httpd = {
-                      enable: true,
-                      url,
-                    }
-                    httpd.getLocalPath((path) =>
-                      console.log('LOC PATH: ' + path)
-                    )
-                    resolve()
-                  },
-                  (err) => {
-                    reject(err)
-                  }
-                )
-              }
-            })
-          })
-        })
-      } catch (err) {
-        alert(err)
-      }
-    },
-  },
+    //       //启动内部服务
+    //       let root = $Util.getUrlPath(cordova.file.externalRootDirectory)
+    //       console.log('root getUrlPath:>> ', root)
+    //       await new Promise((resolve, reject) => {
+    //         let httpd = cordova.plugins.CorHttpd
+    //         httpd.getURL(url => {
+    //           if (url.length > 0) {
+    //             window.httpd = {
+    //               enable: true,
+    //               url
+    //             }
+    //             resolve()
+    //           } else {
+    //             httpd.startServer(
+    //               {
+    //                 www_root: `${root}`,
+    //                 port: fileServer.port,
+    //                 localhost_only: false
+    //               },
+    //               url => {
+    //                 window.httpd = {
+    //                   enable: true,
+    //                   url
+    //                 }
+    //                 httpd.getLocalPath(path => console.log('LOC PATH: ' + path))
+    //                 resolve()
+    //               },
+    //               err => {
+    //                 reject(err)
+    //               }
+    //             )
+    //           }
+    //         })
+    //       })
+    //     })
+    //   } catch (err) {
+    //     alert(err)
+    //   }
+    // }
+  }
 }
 </script>
 <style lang="scss">

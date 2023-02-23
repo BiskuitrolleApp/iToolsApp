@@ -1,30 +1,14 @@
-/*
- * @Descripttion:
- * @version:
- * @Author: kevinzheng
- * @Date: 2021-10-08 14:32:11
- * @LastEditors: kevinzheng
- * @LastEditTime: 2022-06-06 09:56:17
- */
-import Vue from "vue";
-import {
-  CooTabbar,
-  CooButton,
-  CooTabberItem,
-  CooIcon,
-  CooTransfer,
-  CooDialog,
-  CooOverlay
-} from "./package/index";
-import "./package/theme/index.scss";
+import Vue from 'vue'
 
-import cooDialog from "./package/dialog/src/js/dialog";
-Vue.use(cooDialog);
+import './package/theme/index.scss'
+// import * as componentPackags from './package/install'
+import componentPackags from './package/install'
+import cooDialog from './package/dialog/src/js/dialog'
 
-Vue.use(CooButton);
-Vue.use(CooTabbar);
-Vue.use(CooTabberItem);
-Vue.use(CooIcon);
-Vue.use(CooTransfer);
-Vue.use(CooDialog);
-Vue.use(CooOverlay);
+import mixin from './common/mixins/index.js'
+Vue.mixin(mixin)
+
+for (const key in componentPackags) {
+  Vue.use(componentPackags[key])
+}
+Vue.use(cooDialog)

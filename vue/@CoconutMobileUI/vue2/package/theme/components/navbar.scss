@@ -1,0 +1,86 @@
+@import "../mixins/mixins";
+@import "../base/theme";
+@import "../base/var";
+
+@include b(navbar) {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: $--navbar-default-font-color;
+  background-color: $--navbar-default-background-color;
+  // position: fixed;
+  // bottom: 0px;
+  z-index: $--navbar-default-zindex;
+  vertical-align: top;
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px;
+  @include e(left) {
+    padding: 0 10px;
+    height: 100%;
+    display: flex;
+    @include m(title) {
+      display: inline-block;
+      margin-left: 5px;
+    }
+  }
+  @include e(right) {
+    padding: 0 10px;
+    height: 100%;
+    display: flex;
+    @include m(title) {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+  @include e(center) {
+    text-align: center;
+    height: 100%;
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    // flex: 1;
+    // text-align: center;
+    // min-width: 27px;
+    // cursor: pointer;
+    // padding: 10px 5px;
+    // @include e(icon) {
+    //   margin: 0px auto 5px;
+    //   font-size: $--tabbar-default-icon-font;
+    //   i {
+    //     font-size: $--tabbar-default-icon-font;
+    //   }
+    // }
+    // @include e(text) {
+    //   font-size: $--tabbar-default-font;
+    // }
+    // @include when(active) {
+    //   color: $--button-primary-color;
+    //   background-color: $--button-primary-background-color;
+    // }
+  }
+  // @include b(navbar)::after {
+  //
+  // }
+  &::after {
+    position: absolute;
+    box-sizing: border-box;
+    content: " ";
+    pointer-events: none;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
+    border: 0 solid #ebedf0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    border-bottom-width: 1px;
+  }
+}

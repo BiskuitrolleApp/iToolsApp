@@ -5,12 +5,14 @@ $white: #fff !default;
 $black: #000 !default;
 $defalut-white: #fbfbfd !default;
 $defalut-black: #1d1d1f !default;
+
 $primary: #7575ff !default;
 $success: #67c23a !default;
 $warning: #e6a23c !default;
 $danger: #f56c6c !default;
 $info: #909399 !default;
 $transparent: rgba(255, 255, 255, 0) !default;
+
 $gray-1: #646566 !default;
 $gray-2: #b5b6b7 !default;
 
@@ -25,14 +27,17 @@ $font-16: 16px !default;
 $font-14: 14px !default;
 $font-12: 12px !default;
 
-$font-size-small:12px;
-$font-size-normal:14px;
+$font-size-small: 12px;
+$font-size-normal: 14px;
 $font-size-large: 16px;
 
-$padding-small:10px; 
-$padding-normal:12px; 
-$padding-large:16px;
+$padding-small: 10px;
+$padding-normal: 12px;
+$padding-large: 16px;
 
-$mainTitle:$black; // 默认标题颜色
-$subTitle:$gray-1; // 默认次标题颜色
-$borderColor:rgba($gray-2,0.4); // 默认border颜色
+$mainTitle: $black; // 默认标题颜色
+$subTitle: $defalut-black; // 默认次标题颜色
+$mainBackground: $white; // 默认背景颜色
+$secondaryBackground: $defalut-white; // 二级背景颜色
+
+$borderColor: rgba($gray-2, 0.4); // 默认border颜色

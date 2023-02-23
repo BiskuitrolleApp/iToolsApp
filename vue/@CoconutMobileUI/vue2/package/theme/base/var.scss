@@ -60,5 +60,10 @@ $--dialog-title-font-weight: 500;
 $--dialog-title-line-height: 24px;
 $--dialog-content-line-height: 24px;
 $--dialog-button-height: 50px;
-$--dialog-button-cancel-color:$info;
-$--dialog-button-confirm-color:$primary;
+$--dialog-button-cancel-color: $info;
+$--dialog-button-confirm-color: $primary;
+
+//navbar
+$--navbar-default-background-color: $mainBackground;
+$--navbar-default-font-color: $mainTitle;
+$--navbar-default-zindex: 1000;

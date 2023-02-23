@@ -1,11 +1,11 @@
 <template>
   <div>
-    <van-nav-bar
+    <!-- <van-nav-bar
       :title="navTitle"
       left-text="返回"
       left-arrow
       @click-left="onClickLeft"
-    />
+    /> -->
     <router-view></router-view>
   </div>
 </template>

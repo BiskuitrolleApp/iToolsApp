@@ -1,26 +1,17 @@
-/*
- * @Descripttion:
- * @version:
- * @Author: kevinzheng
- * @Date: 2021-11-15 10:12:10
- * @LastEditors: kevinzheng
- * @LastEditTime: 2022-04-11 16:05:29
- */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'vant/lib/index.css'
 import bus from '@/libs/bus'
-import Util from '@/assets/js/Util'
-import { _loadLocalConfigAsync } from '@/assets/js/initLocalDirectory'
+// import Util from '@/assets/js/Util'
+// import { _loadLocalConfigAsync } from '@/assets/js/initLocalDirectory'
 
-import GPS from '@/libs/GPS'
+// import GPS from '@/libs/GPS'
+import './global.scss'
+import '../@CoconutMobileUI/vue2/index'
 
-import '../@CoconutMobileUI/vue2/package/theme/index.scss'
-import cocoInstall from '../@CoconutMobileUI/vue2/index'
-
-Vue.use(cocoInstall)
+// Vue.use(cocoInstall)
 
 import {
   Button,
@@ -63,11 +54,11 @@ Vue.use(ShareSheet)
 Vue.config.productionTip = false
 
 window.$bus = bus
-window.$Util = Util
-window.$GPS = GPS
+// window.$Util = Util
+// window.$GPS = GPS
 
-Vue.prototype.$bus = bus
-Vue.prototype.$Util = Util
+// Vue.prototype.$bus = bus
+// Vue.prototype.$Util = Util
 
 new Vue({
   router,
@@ -75,7 +66,7 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-_loadLocalConfigAsync()
+// _loadLocalConfigAsync()
 
 // // 更新app
 // function onFail() {

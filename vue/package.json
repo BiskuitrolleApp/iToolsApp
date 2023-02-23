@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "temp": "PRO_STATUS=temp vue-cli-service serve --watch",
+    "dev": "PRO_STATUS=temp vue-cli-service serve --watch",
+    "serve": "PRO_STATUS=temp vue-cli-service serve --watch",
     "sit": "PRO_STATUS=sit vue-cli-service serve",
     "build": "PRO_STATUS=prod vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -11,7 +13,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "fabric": "^4.4.0",
+    "fabric": "^4.6.0",
     "localforage": "^1.9.0",
     "localforage-cordovasqlitedriver": "^1.8.0",
     "lodash": "^4.17.20",

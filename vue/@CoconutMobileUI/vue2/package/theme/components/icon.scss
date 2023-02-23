@@ -1,0 +1,7 @@
+@import "../mixins/mixins";
+@import "../base/theme";
+@import "../base/var";
+
+@include b(icon) {
+  display: inline-block;
+}

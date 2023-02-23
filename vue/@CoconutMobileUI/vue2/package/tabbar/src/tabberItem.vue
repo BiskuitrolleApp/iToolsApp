@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'coo-tabbar-item',
+  name: 'CooTabbarItem',
   inject: ['rootMenu'],
   props: {
     icon: {
