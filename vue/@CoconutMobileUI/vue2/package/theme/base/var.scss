@@ -46,13 +46,21 @@ $--button-primary-background-color: $white;
 $--tabbar-default-zindex: 100;
 
 //overlay
-$--overlay-default-background-color: rgba(0, 0, 0, 0.7);
+$--overlay-default-background-color: rgba($mainTitle__Black, 0.7);
+// $--overlay-default-content-color: $white;
 $--overlay-default-zindex: 1000;
-$--overlay-default-content-color: $white;
-$--overlay-border-radius: 10px;
+
+$--overlay-position-top-distance: 0%;
+$--overlay-position-left-distance: 0%;
+$--overlay-position-bottom-distance: 0%;
+$--overlay-position-right-distance: 0%;
+$--overlay-position-center-distance: 50%;
+$--overlay-position-middle-distance: 50%;
 
 // dialog
 $--dialog-default-background-color: $white;
+$--dialog-border-radius: 10px;
+
 $--dialog-border-color: $borderColor;
 $--dialog-default-zindex: 1010;
 $--dialog-title-padding-top: 26px;
@@ -66,4 +74,14 @@ $--dialog-button-confirm-color: $primary;
 //navbar
 $--navbar-default-background-color: $mainBackground;
 $--navbar-default-font-color: $mainTitle;
-$--navbar-default-zindex: 1000;
+$--navbar-default-zindex: 1001;
+
+// toast
+$--toast-default-zindex: 2001;
+$--toast-default-background: rgba($mainTitle__Black, 0.7);
+$--toast-default-font-color: rgba($mainBackground__Black, 1);
+
+$--toast-radius: 8px;
+$--toast-position-top-distance: 20%;
+$--toast-position-bottom-distance: 20%;
+$--toast-position-center-distance: 50%;

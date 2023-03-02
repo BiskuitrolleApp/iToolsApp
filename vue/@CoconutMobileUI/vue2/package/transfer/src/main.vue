@@ -21,7 +21,7 @@ export default {
   props: {
     name: {
       type: String,
-      default: '',
+      default: 'fade',
     },
     type: {
       type: String,
@@ -29,7 +29,7 @@ export default {
     },
     durationType: {
       type: String,
-      default: '',
+      default: 'fast',
     },
   },
   data() {

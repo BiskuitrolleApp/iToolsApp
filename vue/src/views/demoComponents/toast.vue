@@ -1,19 +1,7 @@
 <template>
   <div>
-    <h1 class="title">navbar</h1>
-    <van-nav-bar
-      title="navTitle"
-      left-text="返回"
-      left-arrow
-      @click-left="onClickLeft"
-    />
-    <coo-navbar
-      left-text="返回"
-      right-text="搜索"
-      title="title"
-      @click-left="onClickLeft"
-      @click-right="onClickRight"
-    ></coo-navbar>
+    <h1 class="title" @click="toastClick">toast</h1>
+    <coo-toast content="测试toast"></coo-toast>
     <!-- <coo-navbar
       left-text="返回"
       right-text="搜索"
@@ -35,6 +23,9 @@ export default {
     onClickRight(e) {
       console.log('onClickRight')
       this.copy('onClickRight')
+    },
+    toastClick() {
+      console.log('1 :>> ')
     },
     copy(data) {
       let url = data

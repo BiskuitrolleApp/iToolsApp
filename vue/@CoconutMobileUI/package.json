@@ -4,7 +4,9 @@
   "description": "mobile UI for vue2 and vue3",
   "main": "vue2/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs2:dev": "vuepress dev vue2/docs",
+    "docs2:build": "vuepress build vue2/docs"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,9 @@
   },
   "homepage": "https://github.com/KevinJieZheng/coconut-mobile#readme",
   "dependencies": {
-    "@element-plus/icons-vue": "^2.0.10",
+    "@element-plus/icons-vue": "^2.0.10"
+  },
+  "devDependencies": {
     "vue-awesome": "^4.5.0"
   }
 }

@@ -12,9 +12,10 @@
         'is-loading': loading,
         'is-plain': plain,
         'is-round': round,
-        'is-circle': circle,
-      },
+        'is-circle': circle
+      }
     ]"
+    :style="[customStyle]"
   >
     <span v-if="$slots.default" class="coo-button--text"><slot></slot></span>
   </button>
@@ -27,22 +28,22 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'default',
+      default: 'default'
     },
     size: String,
     icon: {
       type: String,
-      default: '',
+      default: ''
     },
     nativeType: {
       type: String,
-      default: 'button',
+      default: 'button'
     },
     loading: Boolean,
     disabled: Boolean,
     plain: Boolean,
     round: Boolean,
-    circle: Boolean,
+    circle: Boolean
   },
   //监听属性 类似于data概念
   computed: {
@@ -51,7 +52,7 @@ export default {
     },
     buttonSize() {
       return this.size
-    },
+    }
   },
   //方法集合
   methods: {
@@ -60,10 +61,10 @@ export default {
         return
       }
       this.$emit('click', evt)
-    },
-  },
+    }
+  }
 }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 //@import url(); 引入公共css类
 </style>

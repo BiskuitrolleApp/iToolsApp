@@ -1,19 +1,20 @@
-<!--
- * @Descripttion: 遮罩组件
- * @version: 
- * @Author: kevinzheng
- * @Date: 2022-05-20 13:54:00
- * @LastEditors: kevinzheng
- * @LastEditTime: 2022-05-30 18:41:53
--->
 <template>
   <div
     class="coo-overlay"
     @click.stop="clickOverlay"
     v-show="visible"
+    :class="[...positionClassName, customClass]"
+    :style="[customStyle]"
   >
-    <coo-transfer name="fade" type="in" durationType="fast">
-      <div class="coo-overlay-slot">
+    <coo-transfer>
+      <div
+        class="coo-overlay__slot"
+        :class="[
+          {
+            'is-center': mark
+          }
+        ]"
+      >
         <slot></slot>
       </div>
     </coo-transfer>
@@ -28,13 +29,21 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
+    mark: {
+      type: Boolean,
+      default: true
+    },
+    position: {
+      default: 'center-middle',
+      type: String
+    }
   },
   data() {
     //这里存放数据
     return {
-      transferType: 'in',
+      transferType: 'in'
     }
   },
   methods: {
@@ -43,11 +52,20 @@ export default {
       // this.visible = false
       this.$emit('close')
       console.log('clickOverlay :>> ')
-    },
+    }
   },
   mounted() {},
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+    positionClassName() {
+      let positionList = this.position.split('-')
+      let clasList = []
+      positionList.forEach(item => {
+        clasList.push('is-' + item)
+      })
+      return clasList
+    }
+  },
   //监控data中的数据变化
   watch: {
     visible(val) {
@@ -60,10 +78,10 @@ export default {
         document.body.style.overflow = ''
         this.transferType = 'out'
       }
-    },
-  },
+    }
+  }
 }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 //@import url(); 引入公共css类
 </style>

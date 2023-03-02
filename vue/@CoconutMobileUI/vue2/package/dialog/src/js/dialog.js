@@ -1,14 +1,5 @@
-/*
- * @Descripttion: dialog 提前挂载到body的方法
- * @version:
- * @Author: kevinzheng
- * @Date: 2022-06-05 12:27:35
- * @LastEditors: kevinzheng
- * @LastEditTime: 2022-07-23 18:28:16
- */
-
 import vue from 'vue'
-import dialogComponent from '../index.vue'
+import dialogComponent from '../main.vue'
 
 // 创建构造器
 const dialogConstructor = vue.extend(dialogComponent)
