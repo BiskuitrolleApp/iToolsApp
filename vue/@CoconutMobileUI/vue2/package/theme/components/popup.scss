@@ -1,0 +1,96 @@
+@import "../mixins/mixins";
+@import "../base/theme";
+@import "../base/var";
+
+@include b(popup) {
+  @include when(round) {
+    .is-popup-top {
+      border-radius: 0 0 $--popup-radius $--popup-radius;
+    }
+    .is-popup-left {
+      border-radius: 0 $--popup-radius $--popup-radius 0;
+    }
+    .is-popup-bottom {
+      border-radius: $--popup-radius $--popup-radius 0 0;
+    }
+    .is-popup-right {
+      border-radius: $--popup-radius 0 0 $--popup-radius;
+    }
+  }
+  @include when(safetyBottomArea) {
+    .is-popup-top {
+      margin-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS < 11.2 */
+      margin-bottom: env(safe-area-inset-bottom); /* 兼容 iOS >= 11.2 */
+      // border-radius: 0 0 $--popup-radius $--popup-radius;
+    }
+    .is-popup-left,
+    .is-popup-bottom,
+    .is-popup-right {
+      padding-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS < 11.2 */
+      padding-bottom: env(safe-area-inset-bottom); /* 兼容 iOS >= 11.2 */
+      // border-radius: 0 $--popup-radius $--popup-radius 0;
+    }
+  }
+  @include when(safetyTopArea) {
+    .is-popup-top {
+      padding-bottom: constant(safe-area-inset-top); /* 兼容 iOS < 11.2 */
+      padding-bottom: env(safe-area-inset-top); /* 兼容 iOS >= 11.2 */
+      // border-radius: 0 0 $--popup-radius $--popup-radius;
+    }
+    .is-popup-left,
+    .is-popup-bottom,
+    .is-popup-right {
+      margin-bottom: constant(safe-area-inset-top); /* 兼容 iOS < 11.2 */
+      margin-bottom: env(safe-area-inset-top); /* 兼容 iOS >= 11.2 */
+      // border-radius: 0 $--popup-radius $--popup-radius 0;
+    }
+  }
+  .is-popup-top,
+  .is-popup-bottom {
+    width: 100vw;
+    height: 100%;
+  }
+  .is-popup-left,
+  .is-popup-right {
+    width: 100%;
+    height: 100vh;
+  }
+  @include e(contentWrapper) {
+    position: relative;
+    z-index: $--popup-default-zindex;
+    background: $--popup-default-background;
+
+    @include m(topbar) {
+      position: relative;
+      min-height: 50px;
+      line-height: 50px;
+      @include m(icon) {
+        display: flex;
+        justify-content: right;
+        margin-right: $--popup-radius;
+        // padding: $--popup-radius;
+        // top: $--popup-radius;
+        // right: $--popup-radius;
+      }
+      @include m(title) {
+        position: absolute;
+        text-align: center;
+        // padding: $--popup-radius;
+        top: 0px;
+        left: 50%;
+        transform: translate(-50%, 0%);
+      }
+    }
+    @include m(topbar) {
+      position: relative;
+    }
+    // @include m(icon) {
+    //   margin: 0 auto -10px;
+    //   text-align: center;
+    //   // padding-top: 10px;
+    //   height: 60px;
+    //   width: 60px;
+    //   line-height: 60px;
+    // }
+  }
+}

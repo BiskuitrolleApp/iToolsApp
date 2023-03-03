@@ -3,18 +3,17 @@
     class="coo-overlay"
     @click.stop="clickOverlay"
     v-show="visible"
-    :class="[...positionClassName, customClass]"
+    :class="[
+      ...positionClassName,
+      customClass,
+      {
+        'is-mark': mark
+      }
+    ]"
     :style="[customStyle]"
   >
-    <coo-transfer>
-      <div
-        class="coo-overlay__slot"
-        :class="[
-          {
-            'is-center': mark
-          }
-        ]"
-      >
+    <coo-transfer :duration="100">
+      <div class="coo-overlay__slot">
         <slot></slot>
       </div>
     </coo-transfer>
@@ -35,6 +34,9 @@ export default {
       type: Boolean,
       default: true
     },
+    // horizontal-vertical
+    // vertical:top, middle, bottom
+    // horizontal:left, center, right
     position: {
       default: 'center-middle',
       type: String

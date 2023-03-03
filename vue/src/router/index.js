@@ -4,6 +4,7 @@ import homeLayer from '@/layout/homepage.vue'
 import defaultLayer from '@/layout/default.vue'
 
 import demoComponents from './demoComponents'
+import films from './films'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,12 @@ const routes = [
     name: 'demoComponents',
     component: defaultLayer,
     children: demoComponents
+  },
+  {
+    path: '/films',
+    name: 'films',
+    component: defaultLayer,
+    children: films
   }
   // {
   //   path: "/video",

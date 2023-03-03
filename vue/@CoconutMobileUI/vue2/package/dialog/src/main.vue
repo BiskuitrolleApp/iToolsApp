@@ -1,11 +1,3 @@
-<!--
- * @Descripttion: 弹出框提示组件
- * @version: 
- * @Author: kevinzheng
- * @Date: 2021-08-19 17:12:22
- * @LastEditors: kevinzheng
- * @LastEditTime: 2022-07-23 18:21:14
--->
 <template>
   <div class="coo-dialog">
     <coo-overlay
