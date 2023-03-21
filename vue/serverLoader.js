@@ -1,11 +1,3 @@
-/*
- * @Descripttion: 
- * @version: 
- * @Author: kevinzheng
- * @Date: 2022-04-06 16:44:36
- * @LastEditors: kevinzheng
- * @LastEditTime: 2022-04-06 17:23:20
- */
 const config = require('./config')
 
 module.exports = function (source) {

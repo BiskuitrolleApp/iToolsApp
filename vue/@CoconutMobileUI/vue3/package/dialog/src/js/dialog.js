@@ -15,7 +15,6 @@ const dialogConstructor = createApp(dialogComponent)
 let seed = 1
 function dialogCreator(dialogObject = {}) {
   return new Promise((res, rej) => {
-
     const dialogDom = new dialogConstructor({
       el: document.createElement('div'),
       data() {

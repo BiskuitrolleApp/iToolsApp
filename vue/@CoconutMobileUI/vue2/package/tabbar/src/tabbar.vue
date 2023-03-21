@@ -12,17 +12,17 @@ export default {
   props: {
     active: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   provide() {
     return {
-      rootMenu: this,
+      rootMenu: this
     }
   },
   data() {
     return {
-      tabberActive:this.active,
+      tabberActive: this.active
     }
   },
   //监听属性 类似于data概念
@@ -31,10 +31,10 @@ export default {
   watch: {
     tabberActive(newVal) {
       this.$emit('change', newVal)
-    },
-  },
+    }
+  }
 }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 //@import url(); 引入公共css类
 </style>

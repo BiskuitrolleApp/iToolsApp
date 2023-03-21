@@ -10,7 +10,7 @@
       title="测试toast"
       :visible="visible.top"
       :safetyBottomArea="true"
-      :closeble="true"
+      :closeable="true"
       @close="close('top')"
     >
       <div>i am popup top content</div>
@@ -21,7 +21,7 @@
       title="测试toast"
       :visible="visible.bottom"
       :safetyBottomArea="true"
-      :closeble="true"
+      :closeable="true"
       @close="close('bottom')"
     >
       <div>i am popup bottom content</div>
@@ -32,7 +32,7 @@
       title="测试toast"
       :visible="visible.left"
       :safetyBottomArea="true"
-      :closeble="true"
+      :closeable="true"
       @close="close('left')"
     >
       <div>i am popup left content</div>
@@ -43,7 +43,7 @@
       title="测试toast"
       :visible="visible.right"
       :safetyBottomArea="true"
-      :closeble="true"
+      :closeable="true"
       @close="close('right')"
     >
       <div>i am popup right content</div>

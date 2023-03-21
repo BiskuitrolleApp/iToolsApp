@@ -1,7 +1,10 @@
 <template>
   <div>
-    <h1 class="title" @click="toastClick">toast</h1>
-    <coo-toast content="测试toast"></coo-toast>
+    <h1 class="title">toast</h1>
+    <coo-button type="danger" @click="toastClick"
+      >click me showToast</coo-button
+    >
+    <!-- <coo-toast content="测试toast"></coo-toast> -->
     <!-- <coo-navbar
       left-text="返回"
       right-text="搜索"
@@ -25,7 +28,18 @@ export default {
       this.copy('onClickRight')
     },
     toastClick() {
-      console.log('1 :>> ')
+      console.log('click me showToast :>> ')
+      this.$cooToast({
+        // id: 'tempToast',
+        content: '成功',
+        type: 'loading',
+        duration: 10000
+      })
+      setTimeout(() => {
+        // console.log('手动hide')
+        // this.$cooToastHide('tempToast')
+        this.$cooToastHide()
+      }, 3000)
     },
     copy(data) {
       let url = data

@@ -2,7 +2,7 @@
   <div
     class="coo-overlay"
     @click.stop="clickOverlay"
-    v-show="visible"
+    v-show="overlayVisible"
     :class="[
       ...positionClassName,
       customClass,
@@ -26,34 +26,62 @@ export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   props: {
-    visible: {
-      type: Boolean,
-      default: false
-    },
+    // 是否显示mark层级
     mark: {
       type: Boolean,
       default: true
     },
+    // 是否点击内容slot基于页面位置信息
     // horizontal-vertical
     // vertical:top, middle, bottom
     // horizontal:left, center, right
     position: {
       default: 'center-middle',
       type: String
+    },
+    // 是否点击mark层级关闭
+    clickMarkToClose: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     //这里存放数据
     return {
-      transferType: 'in'
+      transferType: 'in',
+      overlayVisible: false
     }
   },
   methods: {
     // 点击遮罩层
     clickOverlay() {
+      this.$emit('click:mark')
       // this.visible = false
-      this.$emit('close')
-      console.log('clickOverlay :>> ')
+      if (this.clickMarkToClose) {
+        this.overlayVisible = false
+      }
+    },
+    /**
+     * 开启overlay方法
+     */
+    show() {
+      this.$emit('before:show')
+      //在打开遮罩层时：
+      document.body.style.overflow = 'hidden'
+      this.transferType = 'in'
+      this.overlayVisible = true
+      this.$emit('showed')
+    },
+    /**
+     * 关闭overlay方法
+     */
+    hide() {
+      this.$emit('before:hide')
+      // 在关闭遮罩层时：
+      document.body.style.overflow = ''
+      this.transferType = 'out'
+      this.overlayVisible = false
+      this.$emit('hidden')
     }
   },
   mounted() {},
@@ -66,20 +94,6 @@ export default {
         clasList.push('is-' + item)
       })
       return clasList
-    }
-  },
-  //监控data中的数据变化
-  watch: {
-    visible(val) {
-      if (val) {
-        //在打开遮罩层时：
-        document.body.style.overflow = 'hidden'
-        this.transferType = 'in'
-      } else {
-        // 在关闭遮罩层时：
-        document.body.style.overflow = ''
-        this.transferType = 'out'
-      }
     }
   }
 }

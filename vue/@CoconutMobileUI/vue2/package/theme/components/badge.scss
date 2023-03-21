@@ -1,0 +1,34 @@
+@import "../mixins/mixins";
+@import "../base/theme";
+@import "../base/var";
+
+@include b(badge) {
+  display: inline-block;
+  background-color: $--tag-background-color;
+  color: $--tag-font-color;
+  min-width: 10px;
+  min-height: 10px;
+  border-radius: 10px;
+  position: absolute;
+  @include when(top-right) {
+    right: 0px;
+    top: 0px;
+    transform: translate(50%, -50%);
+  }
+  @include when(bottom-right) {
+    right: 0px;
+    bottom: 0px;
+    transform: translate(-50%, -50%);
+  }
+  @include when(bottom-left) {
+    left: 0px;
+    bottom: 0px;
+    transform: translate(-50%, -50%);
+  }
+  @include when(top-left) {
+    right: 0px;
+    top: 0px;
+    transform: translate(50%, -50%);
+  }
+  // vertical-align: middle;
+}

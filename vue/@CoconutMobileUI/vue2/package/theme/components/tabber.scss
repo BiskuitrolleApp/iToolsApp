@@ -8,8 +8,8 @@
     align-items: center;
     width: 100%;
     position: fixed;
-    color: $--button-default-color;
-    background-color: $--button-default-background-color;
+    color: $--tabbar-default-color;
+    background-color: $--tabbar-default-background-color;
     bottom: 0px;
     z-index: $--tabbar-default-zindex;
     @include b(tabbarItem) {
@@ -29,8 +29,8 @@
             font-size: $--tabbar-default-font;
         }
         @include when(active) {
-            color: $--button-primary-color;
-            background-color: $--button-primary-background-color;
+            color: $--tabbar-primary-color;
+            background-color: $--tabbar-primary-background-color;
         }
     }
 }

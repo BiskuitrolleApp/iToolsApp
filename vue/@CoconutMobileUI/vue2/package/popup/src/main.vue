@@ -12,13 +12,14 @@
     :style="[customStyle]"
   >
     <coo-overlay
-      :visible="overlayVisible"
       :position="overlayPosition"
-      @close="close"
+      :clickMarkToClose="false"
+      @click:mark="clickMark"
+      ref="overlay"
     >
       <coo-transfer
         :name="transferAnimationName"
-        :type="visible ? 'in' : 'out'"
+        :type="popupVisible ? 'in' : 'out'"
         :duration="duration"
       >
         <div class="coo-popup__contentWrapper" :class="[positionClassName]">
@@ -28,7 +29,7 @@
           >
             <div
               class="coo-popup__contentWrapper--topbar--icon"
-              v-if="closeble"
+              v-if="closeable"
             >
               <coo-icon name="close-line" :size="24"></coo-icon>
             </div>
@@ -45,7 +46,7 @@
           >
             <div
               class="coo-popup__contentWrapper--topbar--icon"
-              v-if="closeble"
+              v-if="closeable"
             >
               <coo-icon name="close-line" :size="24"></coo-icon>
             </div>
@@ -69,7 +70,7 @@ export default {
       default: '',
       type: String
     },
-    closeble: {
+    closeable: {
       default: false,
       type: Boolean
     },
@@ -92,13 +93,19 @@ export default {
     visible: {
       default: false,
       type: Boolean
+    },
+    // 是否点击mark层级关闭
+    clickMarkToClose: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     //这里存放数据
     return {
+      popupVisible: false,
       duration: 200,
-      overlayVisible: false, //遮罩层显示控制器
+      // overlayVisible: false, //遮罩层显示控制器
       positionClassName: 'is-popup-bottom',
       overlayPosition: 'center-bottom',
       transferAnimationName: 'slideDown'
@@ -113,11 +120,9 @@ export default {
     },
     visible(val) {
       if (val) {
-        this.overlayVisible = val
+        this.show()
       } else {
-        setTimeout(() => {
-          this.overlayVisible = false
-        }, this.duration)
+        this.hide()
       }
     }
   },
@@ -155,21 +160,20 @@ export default {
       }
     },
     show() {
-      this.visible = true
-      this.getToastContent()
-      if (this.toastContent.duration == 'infinite') {
-        return
-      } else if (
-        this.toastContent.duration &&
-        !isNaN(Number(this.toastContent.duration)) &&
-        typeof Number(this.toastContent.duration) === 'number'
-      )
-        setTimeout(() => {
-          this.visible = false
-        }, Number(this.toastContent.duration))
+      this.$emit('show')
+      this.$refs.overlay.show()
+      this.popupVisible = true
     },
-    close() {
-      this.$emit('close')
+    clickMark() {
+      if (this.clickMarkToClose) this.hide()
+    },
+    hide() {
+      this.$emit('hide')
+      this.popupVisible = false
+      setTimeout(() => {
+        // this.overlayVisible = false
+        this.$refs.overlay.hide()
+      }, this.duration)
     }
   }
 }

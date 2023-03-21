@@ -8,7 +8,7 @@
     ]"
     :style="[customStyle]"
   >
-    <coo-overlay :visible="visible" :mark="false">
+    <coo-overlay ref="overlay" :mark="false" :clickMarkToClose="false">
       <!-- <coo-overlay
       :visible="visible"
       @click="closeDialogFunction"
@@ -106,14 +106,14 @@ export default {
     },
     type(val) {
       this.toastContent.type = val
+    },
+    visible(val) {
+      if (val) {
+        this.show()
+      } else {
+        this.hide()
+      }
     }
-    // visible(val) {
-    //   if (val) {
-    //     setTimeout(() => {
-    //       this.visible = false
-    //     }, this.toastContent.duration)
-    //   }
-    // }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
@@ -146,7 +146,9 @@ export default {
       }
     },
     show() {
-      this.visible = true
+      // console.log('ref', this.$refs)
+      // this.visible = true
+      this.$refs.overlay.show()
       this.getToastContent()
       if (this.toastContent.duration == 'infinite') {
         return
@@ -156,11 +158,12 @@ export default {
         typeof Number(this.toastContent.duration) === 'number'
       )
         setTimeout(() => {
-          this.visible = false
+          this.hide()
         }, Number(this.toastContent.duration))
     },
-    close() {
-      this.visible = false
+    hide() {
+      // this.visible = false
+      this.$refs.overlay.hide()
     }
   }
 }

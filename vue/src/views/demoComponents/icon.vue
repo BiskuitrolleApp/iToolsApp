@@ -79,10 +79,10 @@ export default {
     selectItem(name) {
       let content = `<coo-icon name="${name}" :size="30"></coo-icon>`
       this.copy(content)
-      this.$cooDialog({
+      this.$cooToast({
         content: '成功',
         iconName: 'book-fill',
-        type: 'self',
+        type: 'success',
         duration: '2000'
       })
       // .then(() => {

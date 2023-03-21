@@ -1,10 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import homeLayer from '@/layout/homepage.vue'
-import defaultLayer from '@/layout/default.vue'
-
-import demoComponents from './demoComponents'
-import films from './films'
 
 Vue.use(VueRouter)
 
@@ -24,18 +20,6 @@ const routes = [
         component: () => import('../views/home/index.vue')
       }
     ]
-  },
-  {
-    path: '/demoComponents',
-    name: 'demoComponents',
-    component: defaultLayer,
-    children: demoComponents
-  },
-  {
-    path: '/films',
-    name: 'films',
-    component: defaultLayer,
-    children: films
   }
   // {
   //   path: "/video",
@@ -65,6 +49,35 @@ const routes = [
   //   }]
   // }
 ]
+
+// 批量导入路由，和views里面每个模块里面的config/router.js 有关
+const requireModule = require.context('@/views/', true, /router\/index\.js/)
+requireModule.keys().forEach(fileName => {
+  let invalidPath = [
+    '.',
+    '..',
+    'router',
+    'views',
+    'components',
+    'config',
+    'index.js'
+  ]
+  let fileNameList = fileName
+    .split('/')
+    .filter(item => invalidPath.indexOf(item) < 0)
+  console.log('routes fileNameList', fileName, fileNameList)
+  let router = {
+    path: '/' + fileNameList.join('/'),
+    name: fileNameList.join('-')
+  }
+  const module = requireModule(fileName)
+  if (module.default) {
+    router = { ...router, ...module.default }
+  }
+  routes.push(router)
+})
+
+console.log('routes', routes)
 
 const router = new VueRouter({
   routes

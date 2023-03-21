@@ -1,12 +1,3 @@
-/*
- * @Descripttion: 请求配置
- * @version: 
- * @Author: kevinzheng
- * @Date: 2022-04-01 17:59:54
- * @LastEditors: kevinzheng
- * @LastEditTime: 2022-04-06 17:09:19
- */
-
 const PRO_STATUS = process.env.PRO_STATUS
 
 console.log('当前环境：', PRO_STATUS == 'temp' ? '本地开发环境' : PRO_STATUS == 'sit' ? '手机测试环境' : '部署环境')

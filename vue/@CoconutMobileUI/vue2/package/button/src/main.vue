@@ -13,7 +13,8 @@
         'is-plain': plain,
         'is-round': round,
         'is-circle': circle
-      }
+      },
+      customClass
     ]"
     :style="[customStyle]"
   >
@@ -30,7 +31,10 @@ export default {
       type: String,
       default: 'default'
     },
-    size: String,
+    size: {
+      type: String,
+      default: 'normal'
+    },
     icon: {
       type: String,
       default: ''

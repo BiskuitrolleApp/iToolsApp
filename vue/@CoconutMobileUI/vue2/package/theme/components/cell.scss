@@ -1,0 +1,43 @@
+@import "../mixins/mixins";
+@import "../base/theme";
+@import "../base/var";
+
+@include b(cell) {
+  // background-color: #fff;
+  background-color: $--cell-background-color;
+  color: $--cell-default-font;
+  font-size: $--cell-default-font;
+  @include b(cellItem) {
+    // width: 100%s;
+    min-height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 10px;
+    padding: 10px 0px;
+    // background-color: #000;
+    &:not(:last-child) {
+      // & ::after {
+      //   content: "";
+      //   border-bottom: 1px solid #eee;
+      // }
+      border-bottom: 1px solid $borderColor;
+    }
+    @include e(main) {
+      min-height: inherit;
+      // width: 100%;
+    }
+    @include e(left) {
+      min-height: inherit;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    @include e(right) {
+      min-height: inherit;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+}

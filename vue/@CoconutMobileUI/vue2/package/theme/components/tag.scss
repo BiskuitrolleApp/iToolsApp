@@ -1,0 +1,93 @@
+@import "../mixins/mixins";
+@import "../base/theme";
+@import "../base/var";
+
+@include b(tag) {
+  display: inline-block;
+  @include m(primary) {
+    background: $--button-primary-background-color;
+    color: $--button-primary-font-color;
+    border: $--border-base; //优先border style
+    border-color: $--button-primary-border-color;
+    @include when(plain) {
+      background: $--button-plain-background-color;
+      color: $--button-primary-border-color;
+    }
+  }
+  @include m(success) {
+    background: $--button-success-background-color;
+    color: $--button-success-font-color;
+    border: $--border-base; //优先border style
+    border-color: $--button-success-border-color;
+    @include when(plain) {
+      background: $--button-plain-background-color;
+      color: $--button-success-border-color;
+    }
+  }
+  @include m(warning) {
+    background: $--button-warning-background-color;
+    color: $--button-warning-font-color;
+    border: $--border-base; //优先border style
+    border-color: $--button-warning-border-color;
+    @include when(plain) {
+      background: $--button-plain-background-color;
+      color: $--button-warning-border-color;
+    }
+  }
+  @include m(danger) {
+    background: $--button-danger-background-color;
+    color: $--button-danger-font-color;
+    border: $--border-base; //优先border style
+    border-color: $--button-danger-border-color;
+    @include when(plain) {
+      background: $--button-plain-background-color;
+      color: $--button-danger-border-color;
+    }
+  }
+  @include m(info) {
+    background: $--button-info-background-color;
+    color: $--button-info-font-color;
+    border: $--border-base; //优先border style
+    border-color: $--button-info-border-color;
+    @include when(plain) {
+      background: $--button-plain-background-color;
+      color: $--button-info-border-color;
+    }
+  }
+  @include when(disabled) {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  // @include when(plain) {
+  //   background: $--button-plain-background-color;
+  //   color: $--button-default-border-color;
+  // }
+  @include when(round) {
+    border-radius: 300px;
+  }
+
+  @include m(large) {
+    // width: 100%;
+    // height: 50px;
+    // padding: 0px 18px;
+    // line-height: 50px;
+    padding: 10px;
+
+    font-size: $--button-large-font;
+  }
+  @include m(normal) {
+    // height: 32px;
+    // padding: 0px 8px;
+    // line-height: 32px;
+    padding: 6px;
+
+    font-size: $--button-normal-font;
+  }
+  @include m(small) {
+    // height: 24px;
+    // padding: 0px 4px;
+    // line-height: 24px;
+    padding: 2px;
+    font-size: $--button-small-font;
+  }
+}

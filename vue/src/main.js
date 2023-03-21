@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import 'vant/lib/index.css'
 import bus from '@/libs/bus'
+// import darkThemeMixin from '@/mixins/darkThemeMixin'
 // import Util from '@/assets/js/Util'
 // import { _loadLocalConfigAsync } from '@/assets/js/initLocalDirectory'
 
@@ -59,6 +60,9 @@ window.$bus = bus
 
 // Vue.prototype.$bus = bus
 // Vue.prototype.$Util = Util
+
+// 公共调用的暗夜模式Mixin
+// Vue.mixin(darkThemeMixin)
 
 new Vue({
   router,
