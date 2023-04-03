@@ -1,7 +1,10 @@
 <template>
   <div>
     <h1 class="title">icon</h1>
-    <div class="search"></div>
+    <div class="search">
+      <input v-model="keyword" @keyup.enter="search" />
+      <coo-button @click="search">查询</coo-button>
+    </div>
     <div class="iconList">
       <div
         class="iconList__type__wrapper"
@@ -58,13 +61,42 @@ import tags from './common/iconTags.json'
 export default {
   data() {
     return {
-      list: {}
+      list: {},
+      keyword: ''
     }
   },
   mounted() {
-    this.list = tags
+    this.search()
   },
   methods: {
+    search() {
+      this.list = this.getList(this.keyword, tags)
+    },
+    getList(keyword, list) {
+      if (keyword == '') {
+        return list
+      }
+      let newList = {}
+      for (const key1 in list) {
+        if (Object.hasOwnProperty.call(list, key1)) {
+          const item1 = list[key1]
+          newList[key1] = {}
+          for (const key2 in item1) {
+            if (Object.hasOwnProperty.call(item1, key2)) {
+              const item2 = item1[key2]
+              for (let index3 = 0; index3 < item2.length; index3++) {
+                const item3 = item2[index3]
+                if (item3.indexOf(keyword) >= 0) {
+                  newList[key1][key2] = item2
+                }
+              }
+            }
+          }
+        }
+      }
+      console.log('newList', newList)
+      return newList
+    },
     onClickLeft(e) {
       console.log('onClickLeft')
       this.copy('onClickLeft')

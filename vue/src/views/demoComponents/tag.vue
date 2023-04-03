@@ -6,30 +6,25 @@
     </div>
     <div class="padding">
       <coo-tag>myTag2</coo-tag>
-    </div>
-    <div class="padding">
-      <coo-tag type="danger">myTag2</coo-tag>
-    </div>
-    <div class="padding">
       <coo-tag plain>myTag2</coo-tag>
-    </div>
-    <div class="padding">
+      <coo-tag type="danger">myTag2</coo-tag>
       <coo-tag type="danger" plain>myTag2</coo-tag>
     </div>
     <div class="padding">
-      <coo-tag plain color="#0f0">myTag2</coo-tag>
-    </div>
-    <div class="padding">
       <coo-tag color="#0f0">myTag2</coo-tag>
-    </div>
-    <div class="padding">
+      <coo-tag plain color="#0f0">myTag2</coo-tag>
       <coo-tag color="#00f" bgColor="#0f0">myTag2</coo-tag>
-    </div>
-    <div class="padding">
       <coo-tag color="#00f" bgColor="#00f" plain>myTag2</coo-tag>
     </div>
     <div class="padding">
+      <coo-tag size="large">myTag2</coo-tag>
+      <coo-tag>myTag2</coo-tag>
+      <coo-tag size="small">myTag2</coo-tag>
+    </div>
+    <div class="padding">
       <coo-tag round>myTag2</coo-tag>
+      <coo-tag round closeable>myTag2</coo-tag>
+      <coo-tag size="large" closeable>myTag2</coo-tag>
     </div>
   </div>
 </template>
@@ -82,6 +77,9 @@ export default {
   }
   .padding {
     padding: 10px;
+    .coo-tag {
+      margin: 10px;
+    }
   }
 }
 </style>

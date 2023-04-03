@@ -25,6 +25,12 @@
     }
     @include e(main) {
       min-height: inherit;
+      @include m(label) {
+        padding: 5px 0px;
+      }
+      @include m(description) {
+        padding: 5px 0px;
+      }
       // width: 100%;
     }
     @include e(left) {

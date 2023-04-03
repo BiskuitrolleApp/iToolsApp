@@ -5,36 +5,38 @@
     :style="{ color: fontColor, 'background-color': bgColor }"
   >
     <coo-cell>
-      <coo-cell-item :description="value.subtitle">
-        <div slot="left" class="u-slot-title">
-          <text class="u-cell-text">{{ value.title }}</text>
-          <div class=""></div>
-          <div class="tag_wrapper" v-if="value.type">
-            <!-- <u-tag
-            text="NEW"
-            borderColor="#1890ff"
-            bgColor="#1890ff"
-            color="#fff"
-            size="mini"
-            v-if="value.type == 'new'"
-          ></u-tag>
-          <u-tag
-            text="HOT"
-            borderColor="#eb6159"
-            bgColor="#eb6159"
-            color="#fff"
-            size="mini"
-            v-if="value.type == 'hot'"
-          ></u-tag> -->
-          </div>
-        </div>
-        <!-- <u-avatar
+      <coo-cell-item :description="value.subtitle" :rightIcon="false">
+        <div>{{ value.subtitle }}</div>
+        <div slot="label" class="u-slot-title">
+          <img
+            :src="value.thumbnail"
+            style="background-color: #ccc;margin: -3px 5px -3px 0;width:30px;height:30px;"
+          />
+          <!-- <u-avatar
         slot="icon"
         shape="square"
         size="50"
         :src="value.thumbnail"
         customStyle="background-color: #ccc;margin: -3px 5px -3px 0"
       ></u-avatar> -->
+          <span>{{ value.title }}</span>
+          <div class="tag_wrapper" v-if="value.type">
+            <coo-tag
+              value="NEW"
+              bgColor="#1890ff"
+              color="#fff"
+              size="small"
+              v-if="value.type == 'new'"
+            ></coo-tag>
+            <coo-tag
+              value="HOT"
+              bgColor="#eb6159"
+              color="#fff"
+              size="small"
+              v-if="value.type == 'hot'"
+            ></coo-tag>
+          </div>
+        </div>
       </coo-cell-item>
     </coo-cell>
   </div>

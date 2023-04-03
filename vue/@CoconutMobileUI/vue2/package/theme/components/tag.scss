@@ -4,6 +4,10 @@
 
 @include b(tag) {
   display: inline-block;
+  @include e(closeWrapper) {
+    display: inline-block;
+    margin-left: 5px;
+  }
   @include m(primary) {
     background: $--button-primary-background-color;
     color: $--button-primary-font-color;
