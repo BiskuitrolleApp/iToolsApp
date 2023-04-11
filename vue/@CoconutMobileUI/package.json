@@ -1,6 +1,6 @@
 {
   "name": "coconut-mobile",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "description": "mobile UI for vue2 and vue3",
   "main": "vue2/index.js",
   "scripts": {
@@ -25,9 +25,10 @@
   },
   "homepage": "https://github.com/KevinJieZheng/coconut-mobile#readme",
   "dependencies": {
-    "@element-plus/icons-vue": "^2.0.10"
+    "@element-plus/icons-vue": "^2.0.10",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2"
   },
   "devDependencies": {
-    "vue-awesome": "^4.5.0"
   }
 }
